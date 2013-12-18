@@ -30,5 +30,10 @@ public class DamageCreatureEffect implements Effect {
         this.amount = amount;
     }
 
+    public DamageCreatureEffect(Creature target, int amount) {
+        this.target = target;
+        this.amount = amount;
+    }
+
     private Creature target;
 }

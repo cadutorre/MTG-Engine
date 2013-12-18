@@ -37,9 +37,10 @@ public class Main {
         };
         engine.addTrigger(oneOneWhenDamaged);
 
+        Effect doubleShock = new MultiEffect(shock, shock);
+
         shock.setTarget(ox);
-        engine.placeOnStack(shock);
-        engine.placeOnStack(shock);
+        engine.placeOnStack(doubleShock);
         engine.executeTheStack();
     }
 }

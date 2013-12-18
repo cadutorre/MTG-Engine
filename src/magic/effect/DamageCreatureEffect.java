@@ -6,7 +6,7 @@ import magic.card.creature.Creature;
 public class DamageCreatureEffect implements Effect {
     public final int amount;
 
-    public boolean targetIsLegal() {
+    public boolean someTargetsLegal() {
         return target.getZone() == Zone.BATTLEFIELD;
     }
 

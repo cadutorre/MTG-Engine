@@ -6,7 +6,7 @@ public class LeaveBattlefield implements Effect {
 
     public final Creature target;
 
-    public boolean targetIsLegal() {
+    public boolean someTargetsLegal() {
         return true;
     }
 

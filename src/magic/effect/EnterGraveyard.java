@@ -8,7 +8,7 @@ public class EnterGraveyard implements Effect {
     public final Permanent target;
     public final Zone fromZone;
 
-    public boolean targetIsLegal() {
+    public boolean someTargetsLegal() {
         return true;
     }
 

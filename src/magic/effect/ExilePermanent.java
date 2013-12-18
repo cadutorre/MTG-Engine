@@ -10,7 +10,7 @@ public class ExilePermanent implements Effect {
         executor.execute(this);
     }
 
-    public boolean targetIsLegal() {
+    public boolean someTargetsLegal() {
         return target.getZone() == Zone.BATTLEFIELD;
     }
 

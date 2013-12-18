@@ -24,7 +24,7 @@ public class Engine extends EffectExecutor {
         while (!theStack.isEmpty()) {
             Effect top = theStack.pop();
 
-            if (top.targetIsLegal()) {
+            if (top.someTargetsLegal()) {
                 executeEffect(top);
             } else {
                 System.out.println("Not resolving: " + top);
@@ -85,6 +85,13 @@ public class Engine extends EffectExecutor {
     protected void execute(PlaceOneOneCounter place) {
         System.out.println(place);
         place.getTarget().placeOneOneCounters(place.counter);
+    }
+
+    protected void execute(MultiEffect effect) {
+        for (Effect e : effect.getEffects()) {
+            if (e.someTargetsLegal())
+                executeEffect(e);
+        }
     }
 
     private void executeEffect(Effect effect) {

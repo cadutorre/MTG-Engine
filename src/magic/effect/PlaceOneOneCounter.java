@@ -12,7 +12,7 @@ public class PlaceOneOneCounter implements Effect {
         executor.execute(this);
     }
 
-    public boolean targetIsLegal() {
+    public boolean someTargetsLegal() {
         return target.getZone() == Zone.BATTLEFIELD;
     }
 

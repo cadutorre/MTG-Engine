@@ -13,6 +13,7 @@ public class LeaveBattlefield implements Effect {
 
     public void execute(Engine engine) {
         System.out.println(this);
+        engine.getBattlefield().leaveBattlefield(target);
     }
 
     public String toString() {

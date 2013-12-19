@@ -1,7 +1,6 @@
 package magic.effect;
 
 import magic.Engine;
-import magic.Zone;
 import magic.card.Permanent;
 
 public class EnterBattlefield implements Effect {
@@ -12,7 +11,7 @@ public class EnterBattlefield implements Effect {
 
     public void execute(Engine engine) {
         System.out.println(this);
-        permanent.setZone(Zone.BATTLEFIELD);
+        engine.getBattlefield().enterBattlefield(permanent);
         permanent.getOwner().gainControl(permanent);
     }
 

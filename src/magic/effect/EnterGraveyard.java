@@ -14,6 +14,7 @@ public class EnterGraveyard implements Effect {
     }
 
     public void execute(Engine engine) {
+        // TODO - should this trigger its own LeaveBattlefield effect?
         System.out.println(this);
         target.setZone(Zone.GRAVEYARD);
     }

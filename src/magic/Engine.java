@@ -80,13 +80,19 @@ public class Engine {
         triggers.add(trigger);
     }
 
+    public Battlefield getBattlefield() {
+        return battlefield;
+    }
+
     public Engine() {
         replacers = new LinkedList<>();
         triggers = new LinkedList<>();
         theStack = new Stack<>();
+        battlefield = new Battlefield();
     }
 
     private LinkedList<EffectReplacer> replacers;
     private LinkedList<EffectTrigger> triggers;
     private Stack<Effect> theStack;
+    private Battlefield battlefield;
 }

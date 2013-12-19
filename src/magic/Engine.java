@@ -1,5 +1,6 @@
 package magic;
 
+import magic.card.Permanent;
 import magic.card.creature.Creature;
 import magic.effect.*;
 import magic.effect.trigger.EffectReplacer;
@@ -92,6 +93,14 @@ public class Engine extends EffectExecutor {
             if (e.someTargetsLegal())
                 executeEffect(e);
         }
+    }
+
+    @Override
+    protected void execute(EnterBattlefield effect) {
+        System.out.println(effect);
+        Permanent p = effect.getPermanent();
+        p.setZone(Zone.BATTLEFIELD);
+        p.getOwner().gainControl(p);
     }
 
     private void executeEffect(Effect effect) {

@@ -1,5 +1,6 @@
 package magic.card;
 
+import magic.Player;
 import magic.Zone;
 
 public abstract class Card {
@@ -17,10 +18,19 @@ public abstract class Card {
         this.zone = zone;
     }
 
+    public void setOwner(Player player) {
+        owner = player;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
     public Card(String name) {
         this.name = name;
         zone = Zone.HAND;
     }
 
+    private Player owner;
     private Zone zone;
 }

@@ -32,7 +32,7 @@ public class TriggerTest {
         engine.placeOnStack(new DamageCreatureEffect(bear, 2));
 
         engine.executeTheStack();
-        assertEquals("Two instances of damage dealt to Pillarfield Ox", 2, testWhenOxDamaged.getNumTimesTriggered());
-        assertEquals("One instance of damage dealt to Some Bear", 1, testWhenBearDamaged.getNumTimesTriggered());
+        assertEquals("Two instances of damage dealt to Pillarfield Ox", 2, testWhenOxDamaged.numTriggersExecuted());
+        assertEquals("One instance of damage dealt to Some Bear", 1, testWhenBearDamaged.numTriggersExecuted());
     }
 }

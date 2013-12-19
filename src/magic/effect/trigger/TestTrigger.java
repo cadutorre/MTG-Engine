@@ -6,6 +6,7 @@ import magic.effect.EffectExecutor;
 public class TestTrigger extends EffectTrigger {
 
     public Effect getEffect() {
+        ++numTriggered;
         return new Effect() {
             public String toString() {
                 return "[Testing Effect]";
@@ -22,7 +23,7 @@ public class TestTrigger extends EffectTrigger {
         };
     }
 
-    public int getNumTimesTriggered() {
+    public int numTriggersExecuted() {
         return numExecuted;
     }
 
@@ -31,4 +32,5 @@ public class TestTrigger extends EffectTrigger {
     }
 
     private int numExecuted;
+    private int numTriggered;
 }

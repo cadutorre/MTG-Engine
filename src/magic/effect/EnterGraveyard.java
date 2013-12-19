@@ -1,5 +1,6 @@
 package magic.effect;
 
+import magic.Engine;
 import magic.Zone;
 import magic.card.Permanent;
 
@@ -12,13 +13,13 @@ public class EnterGraveyard implements Effect {
         return true;
     }
 
-
-    public void accept(EffectExecutor executor) {
-        executor.execute(this);
+    public void execute(Engine engine) {
+        System.out.println(this);
+        target.setZone(Zone.GRAVEYARD);
     }
 
     public String toString() {
-        return target + " enters the Graveyard";
+        return target + " enters the Graveyard from " + fromZone;
     }
 
     public EnterGraveyard(Permanent target, Zone fromZone) {

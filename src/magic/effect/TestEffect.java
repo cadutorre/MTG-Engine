@@ -1,5 +1,7 @@
 package magic.effect;
 
+import magic.Engine;
+
 /**
  * Wraps another Effect and execute as that Effect normally would, while also gathering test data.
  *
@@ -17,10 +19,10 @@ public class TestEffect implements Effect {
         operationOrder = 0;
     }
 
-    public void accept(EffectExecutor executor) {
+    public void execute(Engine engine) {
         hasResolved = true;
         orderResolved = operationOrder++;
-        testThisEffect.accept(executor);
+        testThisEffect.execute(engine);
     }
 
     public boolean hasResolved() {

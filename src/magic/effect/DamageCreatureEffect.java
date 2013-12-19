@@ -1,5 +1,6 @@
 package magic.effect;
 
+import magic.Engine;
 import magic.Zone;
 import magic.card.creature.Creature;
 
@@ -18,8 +19,21 @@ public class DamageCreatureEffect implements Effect {
         target = c;
     }
 
-    public void accept(EffectExecutor executor) {
-        executor.execute(this);
+    public void execute(Engine engine) {
+        System.out.println(this);
+
+        target.reduceToughness(amount);
+
+        if (target.getCurrentToughness() <= 0) {
+            System.out.println(" - lethal damage");
+
+            // kill the creature
+            // TODO - Maybe this shouldn't always happen immediately - for example, after a Combat Phase
+            engine.executeEffect(new LeaveBattlefield(target));
+            engine.executeEffect(new EnterGraveyard(target, Zone.BATTLEFIELD));
+        } else {
+            System.out.println(" - new toughness: " + target.getCurrentToughness());
+        }
     }
 
     public String toString() {

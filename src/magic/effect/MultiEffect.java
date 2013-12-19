@@ -1,9 +1,12 @@
 package magic.effect;
 
+import magic.Engine;
+
 public class MultiEffect implements Effect {
-    @Override
-    public void accept(EffectExecutor executor) {
-        executor.execute(this);
+
+    public void execute(Engine engine) {
+        for (Effect e : effects)
+            e.execute(engine);
     }
 
     @Override

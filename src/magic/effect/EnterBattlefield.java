@@ -1,5 +1,7 @@
 package magic.effect;
 
+import magic.Engine;
+import magic.Zone;
 import magic.card.Permanent;
 
 public class EnterBattlefield implements Effect {
@@ -8,8 +10,10 @@ public class EnterBattlefield implements Effect {
         return permanent + " enters the Battlefield under its owner's control";
     }
 
-    public void accept(EffectExecutor executor) {
-        executor.execute(this);
+    public void execute(Engine engine) {
+        System.out.println(this);
+        permanent.setZone(Zone.BATTLEFIELD);
+        permanent.getOwner().gainControl(permanent);
     }
 
     public boolean someTargetsLegal() {

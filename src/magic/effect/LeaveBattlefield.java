@@ -1,5 +1,6 @@
 package magic.effect;
 
+import magic.Engine;
 import magic.card.creature.Creature;
 
 public class LeaveBattlefield implements Effect {
@@ -10,8 +11,8 @@ public class LeaveBattlefield implements Effect {
         return true;
     }
 
-    public void accept(EffectExecutor executor) {
-        executor.execute(this);
+    public void execute(Engine engine) {
+        System.out.println(this);
     }
 
     public String toString() {

@@ -1,13 +1,16 @@
 package magic.effect;
 
+import magic.Engine;
 import magic.Zone;
 import magic.card.Permanent;
 import magic.card.creature.Creature;
 
 public class ExilePermanent implements Effect {
 
-    public void accept(EffectExecutor executor) {
-        executor.execute(this);
+    public void execute(Engine engine) {
+        System.out.println(this);
+        target.setZone(Zone.EXILE);
+        // TODO put the creature in the exile zone
     }
 
     public boolean someTargetsLegal() {
@@ -16,10 +19,6 @@ public class ExilePermanent implements Effect {
 
     public void setTarget(Permanent creature) {
         target = creature;
-    }
-
-    public Permanent getTarget() {
-        return target;
     }
 
     public String toString() {

@@ -1,7 +1,7 @@
 package magic.effect.trigger;
 
+import magic.Engine;
 import magic.effect.Effect;
-import magic.effect.EffectExecutor;
 
 public class TestTrigger extends EffectTrigger {
 
@@ -12,7 +12,7 @@ public class TestTrigger extends EffectTrigger {
                 return "[Testing Effect]";
             }
             @Override
-            public void accept(EffectExecutor executor) {
+            public void execute(Engine engine) {
                 ++numExecuted;
             }
 

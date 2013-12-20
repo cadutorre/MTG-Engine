@@ -2,6 +2,7 @@ package magic.test;
 
 import magic.Engine;
 import magic.Zone;
+import magic.card.Permanent;
 import magic.card.creature.Creature;
 import magic.effect.*;
 import magic.effect.trigger.EffectPredicate;
@@ -14,7 +15,7 @@ public class Main {
 
         EffectReplacer exileNotDie = new EffectReplacer(EffectPredicate.CREATURE_DIE) {
             public Effect getReplacement(Effect effect) {
-                return new ExilePermanent(((EnterGraveyard)effect).target);
+                return new ExilePermanent((Permanent)((EnterGraveyard)effect).getTarget());
             }
         };
         engine.addReplacement(exileNotDie);

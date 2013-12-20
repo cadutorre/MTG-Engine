@@ -11,7 +11,7 @@ import magic.Engine;
  * When using this class in a suite of JUnit tests, call beginTesting() to reset the order count
  * and ensure accurate data.
  */
-public class TestEffect implements Effect {
+public class TestEffect<T> implements Effect<T> {
 
     private static int operationOrder = 0;
 
@@ -33,16 +33,20 @@ public class TestEffect implements Effect {
         return orderResolved;
     }
 
-    @Override
-    public boolean someTargetsLegal() {
-        return testThisEffect.someTargetsLegal();
+    public void setTarget(T target) {
+        testThisEffect.setTarget(target);
     }
 
-    public TestEffect(Effect testThisEffect) {
+    @Override
+    public boolean isLegallyTargeted(Engine engine) {
+        return testThisEffect.isLegallyTargeted(engine);
+    }
+
+    public TestEffect(Effect<T> testThisEffect) {
         this.testThisEffect = testThisEffect;
     }
 
     private int orderResolved;
     private boolean hasResolved;
-    private Effect testThisEffect;
+    private Effect<T> testThisEffect;
 }

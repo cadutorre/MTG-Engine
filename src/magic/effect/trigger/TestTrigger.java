@@ -17,8 +17,12 @@ public class TestTrigger extends EffectTrigger {
             }
 
             @Override
-            public boolean someTargetsLegal() {
+            public boolean isLegallyTargeted(Engine engine) {
                 return true;
+            }
+
+            @Override
+            public void setTarget(Object target) {
             }
         };
     }

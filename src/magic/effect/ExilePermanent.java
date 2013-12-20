@@ -3,9 +3,8 @@ package magic.effect;
 import magic.Engine;
 import magic.Zone;
 import magic.card.Permanent;
-import magic.card.creature.Creature;
 
-public class ExilePermanent implements Effect {
+public class ExilePermanent implements Effect<Permanent> {
 
     public void execute(Engine engine) {
         // TODO - should this trigger its own LeaveBattlefield effect?
@@ -14,7 +13,7 @@ public class ExilePermanent implements Effect {
         // TODO put the creature in the exile zone
     }
 
-    public boolean someTargetsLegal() {
+    public boolean isLegallyTargeted(Engine engine) {
         return target.getZone() == Zone.BATTLEFIELD;
     }
 
@@ -31,7 +30,6 @@ public class ExilePermanent implements Effect {
     }
 
     public ExilePermanent() {
-
     }
 
     private Permanent target;

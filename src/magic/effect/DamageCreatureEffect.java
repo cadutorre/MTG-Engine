@@ -4,10 +4,10 @@ import magic.Engine;
 import magic.Zone;
 import magic.card.creature.Creature;
 
-public class DamageCreatureEffect implements Effect {
+public class DamageCreatureEffect implements Effect<Creature> {
     public final int amount;
 
-    public boolean someTargetsLegal() {
+    public boolean isLegallyTargeted(Engine engine) {
         return target.getZone() == Zone.BATTLEFIELD;
     }
 
@@ -30,7 +30,7 @@ public class DamageCreatureEffect implements Effect {
             // kill the creature
             // TODO - Maybe this shouldn't always happen immediately - for example, after a Combat Phase
             engine.executeEffect(new LeaveBattlefield(target));
-            engine.executeEffect(new EnterGraveyard(target, Zone.BATTLEFIELD));
+            engine.executeEffect(new EnterGraveyard(target));
         } else {
             System.out.println(" - new toughness: " + target.getCurrentToughness());
         }

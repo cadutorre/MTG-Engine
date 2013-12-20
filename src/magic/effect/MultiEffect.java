@@ -2,7 +2,12 @@ package magic.effect;
 
 import magic.Engine;
 
-public class MultiEffect implements Effect {
+public class MultiEffect<T> implements Effect<T> {
+
+    public void setTarget(T target) {
+        for (Effect<T> e : effects)
+            e.setTarget(target);
+    }
 
     public void execute(Engine engine) {
         for (Effect e : effects)
@@ -10,21 +15,17 @@ public class MultiEffect implements Effect {
     }
 
     @Override
-    public boolean someTargetsLegal() {
+    public boolean isLegallyTargeted(Engine engine) {
         for (Effect e : effects) {
-            if (e.someTargetsLegal())
+            if (e.isLegallyTargeted(engine))
                 return true;
         }
         return false;
     }
 
-    public Effect[] getEffects() {
-        return effects;
-    }
-
-    public MultiEffect(Effect... effects) {
+    public MultiEffect(Effect<T>... effects) {
         this.effects = effects;
     }
 
-    private Effect[] effects;
+    private Effect<T>[] effects;
 }

@@ -2,14 +2,20 @@ package magic.effect;
 
 import magic.Engine;
 import magic.Zone;
+import magic.card.Card;
 import magic.card.Permanent;
 
-public class EnterGraveyard implements Effect {
+public class EnterGraveyard implements Effect<Card> {
 
-    public final Permanent target;
-    public final Zone fromZone;
+    public Card getTarget() {
+        return target;
+    }
 
-    public boolean someTargetsLegal() {
+    public Zone getZoneEnteredFrom() {
+        return fromZone;
+    }
+
+    public boolean isLegallyTargeted(Engine engine) {
         return true;
     }
 
@@ -19,12 +25,21 @@ public class EnterGraveyard implements Effect {
         target.setZone(Zone.GRAVEYARD);
     }
 
+    @Override
+    public void setTarget(Card target) {
+        this.target = target;
+        fromZone = target.getZone();
+    }
+
     public String toString() {
         return target + " enters the Graveyard from " + fromZone;
     }
 
-    public EnterGraveyard(Permanent target, Zone fromZone) {
+    public EnterGraveyard(Card target) {
         this.target = target;
-        this.fromZone = fromZone;
+        fromZone = target.getZone();
     }
+
+    private Card target;
+    private Zone fromZone;
 }

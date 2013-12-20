@@ -13,8 +13,8 @@ public abstract class EffectPredicate {
         public boolean predicate(Effect e) {
             if (e instanceof EnterGraveyard) {
                 EnterGraveyard enter = (EnterGraveyard)e;
-                return enter.fromZone == Zone.BATTLEFIELD
-                    && enter.target instanceof Creature;
+                return enter.getZoneEnteredFrom() == Zone.BATTLEFIELD
+                    && enter.getTarget() instanceof Creature;
             }
 
             return false;

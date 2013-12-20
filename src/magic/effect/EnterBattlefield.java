@@ -3,7 +3,7 @@ package magic.effect;
 import magic.Engine;
 import magic.card.Permanent;
 
-public class EnterBattlefield implements Effect {
+public class EnterBattlefield implements Effect<Permanent> {
 
     public String toString() {
         return permanent + " enters the Battlefield under its owner's control";
@@ -15,16 +15,12 @@ public class EnterBattlefield implements Effect {
         permanent.getOwner().gainControl(permanent);
     }
 
-    public boolean someTargetsLegal() {
+    public boolean isLegallyTargeted(Engine engine) {
         return true;
     }
 
-    public Permanent getPermanent() {
-        return permanent;
-    }
-
-    public EnterBattlefield(Permanent permanent) {
-        this.permanent = permanent;
+    public void setTarget(Permanent p) {
+        permanent = p;
     }
 
     private Permanent permanent;

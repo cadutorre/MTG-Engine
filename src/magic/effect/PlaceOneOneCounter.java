@@ -4,7 +4,7 @@ import magic.Engine;
 import magic.Zone;
 import magic.card.creature.Creature;
 
-public class PlaceOneOneCounter implements Effect {
+public class PlaceOneOneCounter implements Effect<Creature> {
 
     @Override
     public void execute(Engine engine) {
@@ -12,7 +12,7 @@ public class PlaceOneOneCounter implements Effect {
         target.placeOneOneCounters(counter);
     }
 
-    public boolean someTargetsLegal() {
+    public boolean isLegallyTargeted(Engine engine) {
         return target.getZone() == Zone.BATTLEFIELD;
     }
 

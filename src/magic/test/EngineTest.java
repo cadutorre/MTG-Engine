@@ -86,7 +86,7 @@ public class EngineTest {
         ox.setZone(Zone.GRAVEYARD);
         engine.executeTheStack();
 
-        assertFalse("Pillarfield Ox is not a valid target", intoTheMaw.someTargetsLegal());
+        assertFalse("Pillarfield Ox is not a valid target", intoTheMaw.isLegallyTargeted(engine));
         assertFalse("Into the Maw did not execute", testIntoTheMaw.hasResolved());
     }
 }

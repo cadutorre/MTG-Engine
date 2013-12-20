@@ -25,8 +25,10 @@ public class PermanentsTest {
 
         Creature pillarfieldOx = new Creature("Pillarfield Ox", 2, 4);
         pillarfieldOx.setOwner(playerOne);
+        EnterBattlefield oxEnters = new EnterBattlefield();
+        oxEnters.setTarget(pillarfieldOx);
 
-        engine.placeOnStack(new EnterBattlefield(pillarfieldOx));
+        engine.placeOnStack(oxEnters);
         engine.executeTheStack();
 
         assertEquals("Creature is under Player's control", playerOne, pillarfieldOx.getController());
@@ -39,15 +41,16 @@ public class PermanentsTest {
         Engine engine = new Engine();
         Creature ox = new Creature("Pillarfield Ox", 2, 4);
         ox.setOwner(new Player("Player One"));
-
-        engine.executeEffect(new EnterBattlefield(ox));
+        EnterBattlefield oxEnters = new EnterBattlefield();
+        oxEnters.setTarget(ox);
+        engine.executeEffect(oxEnters);
 
         assertEquals("Creature is in the Battlefield Zone", Zone.BATTLEFIELD, ox.getZone());
         assertTrue("Battlefield contains the Creature (as Creature)", engine.getBattlefield().getCreatures().contains(ox));
         assertTrue("Battlefield contains the Creature (as Permanent)", engine.getBattlefield().getPermanents().contains(ox));
 
         engine.executeEffect(new LeaveBattlefield(ox));
-        engine.executeEffect(new EnterGraveyard(ox, Zone.BATTLEFIELD));
+        engine.executeEffect(new EnterGraveyard(ox));
 
         assertEquals("Creature is in the Graveyard Zone", Zone.GRAVEYARD, ox.getZone());
         assertFalse("Battlefield doesn't contain the Creature (as Creature)", engine.getBattlefield().getCreatures().contains(ox));

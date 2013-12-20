@@ -62,7 +62,7 @@ public class Engine {
 
             // TODO - if a spell or ability cannot resolve because it is illegally targeted, is it still replaced by replacement effects?
 
-            if (top.someTargetsLegal()) {
+            if (top.isLegallyTargeted(this)) {
                 executeEffect(top);
             } else {
                 System.out.println("Not resolving: " + top);

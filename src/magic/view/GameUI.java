@@ -23,6 +23,12 @@ public class GameUI extends JFrame implements TargetChooser, EffectListener {
             cardViews.put(enter.getTarget(), cardView);
             battlefields.get(enter.getTarget().getController()).addCard(cardView);
         } else if (effect instanceof DamageCreatureEffect) {
+        } else if (effect instanceof DrawCard) {
+            DrawCard draw = (DrawCard)effect;
+            for (Card c : draw.getCardsDrawn()) {
+                CardView cardView = CardView.create(c);
+                hands.get(c.getOwner()).addCard(cardView);
+            }
         }
     }
 
@@ -36,22 +42,42 @@ public class GameUI extends JFrame implements TargetChooser, EffectListener {
     }
 
     public GameUI(Engine engine) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InstantiationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
         this.engine = engine;
         battlefields = new HashMap<>();
         cardViews = new HashMap<>();
+        hands = new HashMap<>();
 
         getContentPane().setLayout(new FlowLayout());
 
         for (Player p : engine.getPlayers()) {
-            CardList pCreatures = new CardList(p + "'s Creatures");
-            pCreatures.setPreferredSize(new Dimension(750, CardView.HEIGHT + 50));
-            pCreatures.setSize(new Dimension(750, CardView.HEIGHT + 50));
-            getContentPane().add(pCreatures);
-            battlefields.put(p, pCreatures);
+            CardList hand = new CardList(p + "'s Hand");
+            hand.setPreferredSize(new Dimension(750, CardView.HEIGHT + 70));
+            //hand.setSize(new Dimension(750, CardView.HEIGHT + 50));
+            getContentPane().add(hand);
+            hands.put(p, hand);
+
+            CardList creatures = new CardList(p + "'s Creatures");
+            creatures.setPreferredSize(new Dimension(750, CardView.HEIGHT + 70));
+            //creatures.setSize(new Dimension(750, CardView.HEIGHT + 50));
+            getContentPane().add(creatures);
+            battlefields.put(p, creatures);
         }
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        setExtendedState(MAXIMIZED_BOTH);
         setSize(800, 600);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -59,5 +85,6 @@ public class GameUI extends JFrame implements TargetChooser, EffectListener {
 
     private HashMap<Player, CardList> battlefields;
     private HashMap<Card, CardView> cardViews;
+    private HashMap<Player, CardList> hands;
     private Engine engine;
 }

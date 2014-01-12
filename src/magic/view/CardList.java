@@ -13,7 +13,7 @@ public class CardList extends JPanel {
     @Override
     public void setSize(int width, int height) {
         super.setSize(width, height);
-        cardScroller.setPreferredSize(new Dimension(width, height));
+        //cardScroller.setPreferredSize(new Dimension(width, height));
     }
 
     public CardList(String name) {
@@ -29,7 +29,7 @@ public class CardList extends JPanel {
         cards.setVisibleRowCount(1);
 
         cardScroller = new JScrollPane(cards);
-        cardScroller.setSize(750, CardView.HEIGHT + 50);
+        cardScroller.setPreferredSize(new Dimension(700, CardView.HEIGHT + 45));
 
         add(cardScroller);
     }

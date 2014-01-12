@@ -6,6 +6,8 @@ import magic.Zone;
 public abstract class Card {
     public final String name;
 
+    public abstract Card clone();
+
     public String toString() {
         return name;
     }

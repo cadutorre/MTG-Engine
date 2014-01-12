@@ -94,6 +94,11 @@ public class Engine {
         listeners.add(l);
     }
 
+    public void beginGame() {
+        for (Player player : players)
+            executeEffect(new DrawCard(player, 7));
+    }
+
     public Engine(Player... players) {
         this.players = players;
         listeners = new LinkedList<>();

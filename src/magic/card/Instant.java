@@ -17,6 +17,11 @@ public class Instant extends Card implements Effect {
         return bolt;
     }
 
+    public Instant clone() {
+        return new Instant(name);
+        // TODO deep-clone the effects
+    }
+
     public static Instant getUnmake(Player owner) {
         TargetedEffect<Creature> unmakeEffect = new TargetedEffect<>(new CreatureOnBattlefield(),
                 new MultiEffect(new LeaveBattlefield(), new ExilePermanent()));

@@ -11,6 +11,10 @@ public class Creature extends Permanent {
         return c;
     }
 
+    public Creature clone() {
+        return new Creature(name, printedPower, printedToughness);
+    }
+
     public final int printedPower;
     public final int printedToughness;
 

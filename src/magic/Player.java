@@ -1,5 +1,7 @@
 package magic;
 
+import magic.card.Card;
+import magic.card.Library;
 import magic.card.Permanent;
 import magic.card.creature.Creature;
 
@@ -42,6 +44,20 @@ public class Player {
         permanents.remove(p);
     }
 
+    public void setLibrary(Library library) {
+        this.library = library;
+    }
+
+    public Card[] draw(int cards) {
+        Card[] drawn = new Card[cards];
+        for (int i = 0; i<cards; ++i) {
+            Card c = library.draw();
+            drawn[i] = c;
+            hand.add(c);
+        }
+        return drawn;
+    }
+
     public Player(String name) {
         this(name, 20);
     }
@@ -50,12 +66,15 @@ public class Player {
         this.name = name;
         lifeTotal = startingLife;
 
+        hand = new LinkedList();
         permanents = new LinkedList<>();
         creatures = new LinkedList<>();
     }
 
     private List<Permanent> permanents;
     private List<Creature> creatures;
+    private List<Card> hand;
+    private Library library;
 
     private String name;
     private int lifeTotal;

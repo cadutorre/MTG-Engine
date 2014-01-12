@@ -7,6 +7,10 @@ import java.util.List;
 
 public class TargetedEffect<T> implements Effect<T> {
 
+    public String toString() {
+        return effect.toString();
+    }
+
     public List<T> getLegalTargets(Engine engine) {
         return targeter.getLegalTargets(engine);
     }

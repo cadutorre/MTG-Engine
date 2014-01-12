@@ -1,12 +1,13 @@
 package magic.effect.target;
 
 import magic.effect.Effect;
+import magic.effect.TargetedEffect;
 
 import java.util.HashMap;
 
 public class TestTargeter implements TargetChooser {
     @Override
-    public void chooseTarget(Effect effect) {
+    public void chooseTarget(TargetedEffect effect) {
        effect.setTarget(targets.get(effect));
     }
 

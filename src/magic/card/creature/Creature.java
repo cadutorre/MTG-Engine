@@ -1,11 +1,23 @@
 package magic.card.creature;
 
+import magic.Player;
 import magic.card.Permanent;
 
 public class Creature extends Permanent {
 
+    public static Creature getPillarfieldOx(Player owner) {
+        Creature c = new Creature("Pillarfield Ox", 2, 4);
+        c.setOwner(owner);
+        return c;
+    }
+
     public final int printedPower;
     public final int printedToughness;
+
+    public void modifyPowerToughness(int power, int toughness) {
+        currentPower += power;
+        currentToughness += toughness;
+    }
 
     public int getCurrentPower() {
         return currentPower + oneOneCounters;
@@ -33,7 +45,7 @@ public class Creature extends Permanent {
     }
 
     public String toString() {
-        return name + " (" + getCurrentPower() + "/" + getCurrentToughness() + ")";
+        return getController() + "'s " + name + " (" + getCurrentPower() + "/" + getCurrentToughness() + ")";
     }
 
     public Creature(String name, int power, int toughness) {

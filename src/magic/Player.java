@@ -29,6 +29,7 @@ public class Player {
     }
 
     public void gainControl(Permanent p) {
+        System.out.println(this + " gaining control of " + p);
         p.setController(this);
         permanents.add(p);
         if (p instanceof Creature)

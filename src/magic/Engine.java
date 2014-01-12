@@ -28,6 +28,8 @@ public class Engine {
 
         // Execute the effect
         effect.execute(this);
+        for (EffectListener l : listeners)
+            l.notifyEffect(effect);
 
         // Identify any triggers from this effect
         LinkedList<Effect> triggeredEffects = new LinkedList<>();
@@ -84,13 +86,25 @@ public class Engine {
         return battlefield;
     }
 
-    public Engine() {
+    public Player[] getPlayers() {
+        return players;
+    }
+
+    public void addEffectListener(EffectListener l) {
+        listeners.add(l);
+    }
+
+    public Engine(Player... players) {
+        this.players = players;
+        listeners = new LinkedList<>();
         replacers = new LinkedList<>();
         triggers = new LinkedList<>();
         theStack = new Stack<>();
         battlefield = new Battlefield();
     }
 
+    private Player[] players;
+    private LinkedList<EffectListener> listeners;
     private LinkedList<EffectReplacer> replacers;
     private LinkedList<EffectTrigger> triggers;
     private Stack<Effect> theStack;

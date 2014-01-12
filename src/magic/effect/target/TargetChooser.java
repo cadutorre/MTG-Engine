@@ -1,7 +1,7 @@
 package magic.effect.target;
 
-import magic.effect.Effect;
+import magic.effect.TargetedEffect;
 
 public interface TargetChooser {
-    public void chooseTarget(Effect<?> effect);
+    public <T> void chooseTarget(TargetedEffect<T> effect);
 }

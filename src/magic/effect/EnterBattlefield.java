@@ -11,16 +11,27 @@ public class EnterBattlefield implements Effect<Permanent> {
 
     public void execute(Engine engine) {
         System.out.println(this);
-        engine.getBattlefield().enterBattlefield(permanent);
         permanent.getOwner().gainControl(permanent);
+        engine.getBattlefield().enterBattlefield(permanent);
     }
 
     public boolean isLegallyTargeted(Engine engine) {
         return true;
     }
 
+    public Permanent getTarget() {
+        return permanent;
+    }
+
     public void setTarget(Permanent p) {
         permanent = p;
+    }
+
+    public EnterBattlefield(Permanent p) {
+        permanent = p;
+    }
+
+    public EnterBattlefield() {
     }
 
     private Permanent permanent;

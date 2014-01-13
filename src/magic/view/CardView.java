@@ -22,6 +22,10 @@ public class CardView extends JComponent {
         return new CardView(card);
     }
 
+    public Card getCard() {
+        return card;
+    }
+
     @Override
     public void paint(Graphics g) {
         if (fontMetrics == null) {

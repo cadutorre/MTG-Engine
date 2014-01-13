@@ -49,7 +49,8 @@ public class Creature extends Permanent {
     }
 
     public String toString() {
-        return getController() + "'s " + name + " (" + getCurrentPower() + "/" + getCurrentToughness() + ")";
+        return (getController() == null ? "" : (getController() + "'s "))
+                + name + " (" + getCurrentPower() + "/" + getCurrentToughness() + ")";
     }
 
     public Creature(String name, int power, int toughness) {

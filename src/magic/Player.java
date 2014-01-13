@@ -58,6 +58,14 @@ public class Player {
         return drawn;
     }
 
+    public List<Card> getHand() {
+        return hand;
+    }
+
+    public void leaveHand(Card c) {
+        hand.remove(c);
+    }
+
     public Player(String name) {
         this(name, 20);
     }

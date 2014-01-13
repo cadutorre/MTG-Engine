@@ -1,8 +1,13 @@
 package magic;
 
+import magic.card.Card;
+import magic.card.Instant;
+import magic.card.creature.Creature;
 import magic.effect.*;
 import magic.effect.trigger.EffectReplacer;
 import magic.effect.trigger.EffectTrigger;
+import magic.event.EventListener;
+import magic.event.GainPriority;
 
 import java.util.LinkedList;
 import java.util.Stack;
@@ -28,8 +33,8 @@ public class Engine {
 
         // Execute the effect
         effect.execute(this);
-        for (EffectListener l : listeners)
-            l.notifyEffect(effect);
+        for (EventListener l : listeners)
+            l.notifyEvent(effect);
 
         // Identify any triggers from this effect
         LinkedList<Effect> triggeredEffects = new LinkedList<>();
@@ -50,6 +55,39 @@ public class Engine {
 
     public void placeOnStack(Effect effect) {
         theStack.push(effect);
+    }
+
+    public void playCard(Card c) {
+        c.getOwner().leaveHand(c);
+        if (c instanceof Creature) {
+            Creature creature = (Creature)c;
+            placeOnStack(new EnterBattlefield(creature));
+        } else if (c instanceof Instant) {
+            Instant instant = (Instant)c;
+            placeOnStack(instant);
+        }
+
+        // Active player gains priority again
+        for (EventListener l : listeners)
+            l.notifyEvent(new GainPriority(activePlayer));
+    }
+
+    public void passPriority() {
+        /* TODO either give priority to the next player, or execute the top of the stack
+        once all players have passed; or end the phase if the stack is empty */
+        executeTheStack();
+    }
+
+    /**
+     * TODO - this should be private, but for now testing will be easier if we can initiate this
+     */
+    public void mainPhase(Player player) {
+        currentPhase = Phase.FIRST_MAIN_PHASE;
+        activePlayer = player;
+
+        // The active Player gains Priority on their main phase
+        for (EventListener l : listeners)
+            l.notifyEvent(new GainPriority(player));
     }
 
     /**
@@ -90,7 +128,7 @@ public class Engine {
         return players;
     }
 
-    public void addEffectListener(EffectListener l) {
+    public void addEffectListener(EventListener l) {
         listeners.add(l);
     }
 
@@ -108,8 +146,10 @@ public class Engine {
         battlefield = new Battlefield();
     }
 
+    private Phase currentPhase;
+    private Player activePlayer;
     private Player[] players;
-    private LinkedList<EffectListener> listeners;
+    private LinkedList<EventListener> listeners;
     private LinkedList<EffectReplacer> replacers;
     private LinkedList<EffectTrigger> triggers;
     private Stack<Effect> theStack;

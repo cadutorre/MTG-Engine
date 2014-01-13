@@ -3,32 +3,36 @@ package magic.view;
 import magic.Engine;
 import magic.Player;
 import magic.card.Card;
-import magic.card.creature.Creature;
 import magic.effect.*;
 import magic.effect.target.TargetChooser;
+import magic.event.EventListener;
+import magic.event.GainPriority;
+import magic.event.GameEvent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 
-public class GameUI extends JFrame implements TargetChooser, EffectListener {
+public class GameUI extends JFrame implements TargetChooser, EventListener {
 
     @Override
-    public void notifyEffect(Effect effect) {
-        System.out.println("UI animating " + effect);
-        if (effect instanceof EnterBattlefield) {
-            EnterBattlefield enter = (EnterBattlefield)effect;
+    public void notifyEvent(GameEvent event) {
+        System.out.println("UI animating " + event);
+        if (event instanceof EnterBattlefield) {
+            EnterBattlefield enter = (EnterBattlefield)event;
             CardView cardView = CardView.create(enter.getTarget());
             cardViews.put(enter.getTarget(), cardView);
             battlefields.get(enter.getTarget().getController()).addCard(cardView);
-        } else if (effect instanceof DamageCreatureEffect) {
-        } else if (effect instanceof DrawCard) {
-            DrawCard draw = (DrawCard)effect;
+        } else if (event instanceof DrawCard) {
+            DrawCard draw = (DrawCard)event;
             for (Card c : draw.getCardsDrawn()) {
                 CardView cardView = CardView.create(c);
                 hands.get(c.getOwner()).addCard(cardView);
             }
+        } else if (event instanceof GainPriority) {
+            Player priority = ((GainPriority)event).player;
+            gainPriority(priority);
         }
     }
 
@@ -39,6 +43,19 @@ public class GameUI extends JFrame implements TargetChooser, EffectListener {
         T target = (T)JOptionPane.showInputDialog(this, effect.toString(), "Choose a target", JOptionPane.QUESTION_MESSAGE, null, targets, null);
 
         effect.setTarget(target);
+    }
+
+    public void gainPriority(Player player) {
+        // Prompt the player to play a legal card, or pass priority
+
+        Object[] legalCards = player.getHand().toArray();
+        Card card = (Card)JOptionPane.showInputDialog(this, "Choose a Card to Play", "You have Priority", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
+        if (card == null) { // When the user hits Cancel
+            engine.passPriority();
+        } else {
+            hands.get(player).removeCard(card);
+            engine.playCard(card);
+        }
     }
 
     public GameUI(Engine engine) {

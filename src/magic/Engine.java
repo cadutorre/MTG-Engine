@@ -8,6 +8,7 @@ import magic.effect.trigger.EffectReplacer;
 import magic.effect.trigger.EffectTrigger;
 import magic.event.EventListener;
 import magic.event.GainPriority;
+import magic.event.StackUpdate;
 
 import java.util.LinkedList;
 import java.util.Stack;
@@ -55,6 +56,9 @@ public class Engine {
 
     public void placeOnStack(Effect effect) {
         theStack.push(effect);
+
+        for (EventListener l : listeners)
+            l.notifyEvent(new StackUpdate());
     }
 
     public void playCard(Card c) {
@@ -100,6 +104,9 @@ public class Engine {
         while (!theStack.isEmpty()) {
             Effect top = theStack.pop();
 
+            for (EventListener l : listeners)
+                l.notifyEvent(new StackUpdate());
+
             // TODO - if a spell or ability cannot resolve because it is illegally targeted, is it still replaced by replacement effects?
 
             if (top.isLegallyTargeted(this)) {
@@ -126,6 +133,10 @@ public class Engine {
 
     public Player[] getPlayers() {
         return players;
+    }
+
+    public Stack<Effect> getTheStack() {
+        return theStack;
     }
 
     public void addEffectListener(EventListener l) {

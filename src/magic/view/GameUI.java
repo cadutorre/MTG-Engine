@@ -8,6 +8,7 @@ import magic.effect.target.TargetChooser;
 import magic.event.EventListener;
 import magic.event.GainPriority;
 import magic.event.GameEvent;
+import magic.event.StackUpdate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +34,8 @@ public class GameUI extends JFrame implements TargetChooser, EventListener {
         } else if (event instanceof GainPriority) {
             Player priority = ((GainPriority)event).player;
             gainPriority(priority);
+        } else if (event instanceof StackUpdate) {
+            stack.update();
         }
     }
 
@@ -72,23 +75,26 @@ public class GameUI extends JFrame implements TargetChooser, EventListener {
         }
 
         this.engine = engine;
+        stack = new StackView(engine);
         battlefields = new HashMap<>();
         cardViews = new HashMap<>();
         hands = new HashMap<>();
 
-        getContentPane().setLayout(new FlowLayout());
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(stack, BorderLayout.WEST);
 
+        JPanel center = new JPanel();
+        center.setLayout(new FlowLayout());
+        getContentPane().add(center, BorderLayout.CENTER);
         for (Player p : engine.getPlayers()) {
             CardList hand = new CardList(p + "'s Hand");
             hand.setPreferredSize(new Dimension(750, CardView.HEIGHT + 70));
-            //hand.setSize(new Dimension(750, CardView.HEIGHT + 50));
-            getContentPane().add(hand);
+            center.add(hand);
             hands.put(p, hand);
 
             CardList creatures = new CardList(p + "'s Creatures");
             creatures.setPreferredSize(new Dimension(750, CardView.HEIGHT + 70));
-            //creatures.setSize(new Dimension(750, CardView.HEIGHT + 50));
-            getContentPane().add(creatures);
+            center.add(creatures);
             battlefields.put(p, creatures);
         }
 
@@ -100,6 +106,7 @@ public class GameUI extends JFrame implements TargetChooser, EventListener {
         setVisible(true);
     }
 
+    private StackView stack;
     private HashMap<Player, CardList> battlefields;
     private HashMap<Card, CardView> cardViews;
     private HashMap<Player, CardList> hands;

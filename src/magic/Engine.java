@@ -64,19 +64,39 @@ public class Engine {
             o.stackChanged();
     }
 
+    public void beginTurn(Player p) {
+        setPhase(Phase.BEGINNING);
+
+        activePlayer = p;
+        for (GameStateObserver o : observers)
+            o.turnChanged(activePlayer);
+
+        // TODO upkeep step - untap permanents
+
+        executeEffect(new DrawCard(activePlayer, 1));
+
+        passPriority();
+
+        // TODO end the phase
+
+        mainPhase();
+    }
+
     /**
      * TODO - this should be private, but for now testing will be easier if we can initiate this
      */
     public void mainPhase() {
-        currentPhase = Phase.FIRST_MAIN_PHASE;
+        setPhase(Phase.FIRST_MAIN_PHASE);
 
         passPriority();
 
         // TODO end the phase (empty mana pool)
+
+        combat();
     }
 
     public void combat() {
-        currentPhase = Phase.COMBAT_PHASE;
+        setPhase(Phase.COMBAT_PHASE);
 
         // TODO declare attackers
 
@@ -94,11 +114,27 @@ public class Engine {
     }
 
     public void secondMainPhase() {
-        currentPhase = Phase.SECOND_MAIN_PHASE;
+        setPhase(Phase.SECOND_MAIN_PHASE);
 
         passPriority();
 
         // TODO end the phase
+
+        endPhase();
+    }
+
+    public void endPhase() {
+        setPhase(Phase.ENDING);
+
+        passPriority();
+
+        // TODO end the phase
+
+        // TODO end of turn triggers
+
+        // TODO discard step
+
+        beginTurn(playerAfter(activePlayer));
     }
 
     /**
@@ -137,8 +173,7 @@ public class Engine {
         for (Player player : players)
             executeEffect(new DrawCard(player, 7));
 
-        activePlayer = players[0];
-        mainPhase();
+        beginTurn(players[0]);
     }
 
     public void setController(GameController controller) {
@@ -237,6 +272,12 @@ public class Engine {
                 return players[i+1];
         }
         return players[0];
+    }
+
+    private void setPhase(Phase phase) {
+        currentPhase = phase;
+        for (GameStateObserver o : observers)
+            o.phaseChanged(phase);
     }
 
     private GameController controller;

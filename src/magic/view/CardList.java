@@ -9,14 +9,18 @@ import java.awt.*;
 public class CardList extends JPanel {
 
     public void addCard(CardView c) {
-        cardModel.addElement(c);
+        synchronized(this) {
+            cardModel.addElement(c);
+        }
     }
 
     public void removeCard(Card card) {
-        for (int i = 0; i<cardModel.size(); ++i) {
-            if (cardModel.getElementAt(i).getCard() == card) {
-                cardModel.remove(i);
-                return;
+        synchronized(this) {
+            for (int i = 0; i<cardModel.size(); ++i) {
+                if (cardModel.getElementAt(i).getCard() == card) {
+                    cardModel.remove(i);
+                    return;
+                }
             }
         }
 
@@ -26,7 +30,6 @@ public class CardList extends JPanel {
     @Override
     public void setSize(int width, int height) {
         super.setSize(width, height);
-        //cardScroller.setPreferredSize(new Dimension(width, height));
     }
 
     public CardList(String name) {

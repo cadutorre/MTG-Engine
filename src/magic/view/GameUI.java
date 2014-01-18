@@ -1,9 +1,6 @@
 package magic.view;
 
-import magic.Engine;
-import magic.GameStateObserver;
-import magic.Player;
-import magic.Stackable;
+import magic.*;
 import magic.card.Card;
 import magic.card.Spell;
 import magic.controller.PlayerController;
@@ -53,6 +50,22 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         effect.setTarget(target);
     }
 
+    @Override
+    public void turnChanged(Player player) {
+        status.setPlayerTurn(player);
+    }
+
+    @Override
+    public void phaseChanged(Phase phase) {
+        status.setPhase(phase);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Stackable offerPriority(Player player) {
         // Prompt the player to play a legal card, or pass priority
 
@@ -99,6 +112,9 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
             battlefields.put(p, creatures);
         }
 
+        status = new TurnStatusView();
+        getContentPane().add(status, BorderLayout.NORTH);
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setExtendedState(MAXIMIZED_BOTH);
@@ -111,5 +127,6 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
     private HashMap<Player, CardList> battlefields;
     private HashMap<Card, CardView> cardViews;
     private HashMap<Player, CardList> hands;
+    private TurnStatusView status;
     private Engine engine;
 }

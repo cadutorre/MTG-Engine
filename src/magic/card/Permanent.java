@@ -25,7 +25,7 @@ public abstract class Permanent extends Card {
     }
 
     public Permanent(String name) {
-        super(name);
+        super(name, false);
     }
 
     private Player controller;

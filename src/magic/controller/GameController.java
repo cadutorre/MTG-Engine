@@ -31,8 +31,8 @@ public class GameController {
         engine.beginGame();
     }
 
-    public Stackable offerPriority(Player p) {
-        return playerControllers.get(p).offerPriority(p);
+    public Stackable offerPriority(Player p, boolean canPlaySorcery) {
+        return playerControllers.get(p).offerPriority(p, canPlaySorcery);
     }
 
     public void setPlayerController(Player p, PlayerController c) {

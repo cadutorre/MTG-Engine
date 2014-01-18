@@ -231,7 +231,12 @@ public class Engine {
      * @return whether the Player accepts Priority and plays a Spell or Ability
      */
     private boolean offerPriority(Player p) {
-        Stackable s = controller.offerPriority(p);
+        boolean canPlaySorcerySpeed =
+                theStack.isEmpty()
+             && p == activePlayer
+             && (currentPhase == Phase.FIRST_MAIN_PHASE || currentPhase == Phase.SECOND_MAIN_PHASE);
+
+        Stackable s = controller.offerPriority(p, canPlaySorcerySpeed);
 
         if (s == null) // Player declines to activate anything
             return false;

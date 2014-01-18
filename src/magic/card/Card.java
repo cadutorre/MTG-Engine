@@ -10,6 +10,10 @@ public abstract class Card {
         return name;
     }
 
+    public boolean isInstantSpeed() {
+        return instantSpeed;
+    }
+
     public Zone getZone() {
         return zone;
     }
@@ -26,11 +30,13 @@ public abstract class Card {
         return owner;
     }
 
-    public Card(String name) {
+    public Card(String name, boolean instantSpeed) {
         this.name = name;
+        this.instantSpeed = instantSpeed;
         zone = Zone.HAND;
     }
 
     private Player owner;
     private Zone zone;
+    private boolean instantSpeed;
 }

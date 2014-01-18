@@ -3,6 +3,7 @@ package magic.card;
 import magic.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Library {
 
@@ -15,7 +16,7 @@ public class Library {
     }
 
     public void shuffle() {
-
+        Collections.shuffle(cards);
     }
 
     public Library(Deck deck, Player owner) {

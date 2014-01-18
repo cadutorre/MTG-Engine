@@ -5,7 +5,6 @@ import magic.Player;
 import sun.awt.OrientableFlowLayout;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class TurnStatusView extends JPanel {
     public void setPlayerTurn(Player p) {

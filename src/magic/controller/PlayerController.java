@@ -11,5 +11,5 @@ public interface PlayerController {
      * This PlayerController must provide the Spell or Ability with legal Targets,
      * and be sure that it can be activated legally
      */
-    public Stackable offerPriority(Player player);
+    public Stackable offerPriority(Player player, boolean canPlaySorcery);
 }

@@ -2,6 +2,7 @@ package magic.view;
 
 import magic.*;
 import magic.card.Card;
+import magic.card.Instant;
 import magic.card.Spell;
 import magic.controller.PlayerController;
 import magic.effect.*;
@@ -10,6 +11,7 @@ import magic.effect.target.TargetChooser;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GameUI extends JFrame implements TargetChooser, GameStateObserver, PlayerController {
@@ -66,12 +68,26 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         }
     }
 
-    public Stackable offerPriority(Player player) {
+    public Stackable offerPriority(Player player, boolean canPlaySorcery) {
         // Prompt the player to play a legal card, or pass priority
 
-        // TODO - filter the playable spells based on casting speed
-        Object[] legalCards = player.getHand().toArray();
-        Spell spell = (Spell)JOptionPane.showInputDialog(this, "Choose a Spell to Cast", player + " has Priority", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
+        List<Object> legalCardList = new LinkedList<>();
+        for (Card c : player.getHand()) {
+            // TODO check if the spell can be cast
+            if (c.isInstantSpeed() || canPlaySorcery)
+                 legalCardList.add(c);
+        }
+
+        if (legalCardList.isEmpty())
+            return null;
+
+        Object[] legalCards = legalCardList.toArray();
+        String prompt = canPlaySorcery ? "Choose a Spell to Cast" : "Choose an Instant-Speed Spell to Cast";
+        Spell spell = (Spell)JOptionPane.showInputDialog(this, prompt, player + " has Priority", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
+
+        if (spell != null && spell instanceof Instant)
+            chooseTargets((Instant)spell);
+
         return spell;
     }
 
@@ -121,6 +137,10 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         setSize(800, 600);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void chooseTargets(Instant instant) {
+        instant.chooseTargets(this);
     }
 
     private StackView stack;

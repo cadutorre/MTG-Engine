@@ -14,6 +14,8 @@ public class Deck implements Iterable<Card> {
             deck.add(new Creature("Pillarfield Ox", 2, 4));
             deck.add(new Creature("Serra Angel", 4, 4));
             deck.add(new Creature("Memnite", 0, 1));
+            deck.add(Instant.getLightningBolt());
+            deck.add(Instant.getUnmake());
         }
         return deck;
     }

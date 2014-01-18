@@ -8,21 +8,33 @@ import magic.effect.*;
 import magic.effect.target.CreatureOnBattlefield;
 import magic.effect.target.TargetChooser;
 
-public class Instant extends Card implements Stackable {
+public class Instant extends Card implements Stackable, Spell {
 
     public static Instant getLightningBolt(Player owner) {
-        TargetedEffect<Creature> boltEffect = new TargetedEffect<>(new CreatureOnBattlefield(), new DamageCreatureEffect(3));
-        Instant bolt = new Instant("Lightning Bolt", boltEffect);
+        Instant bolt = getLightningBolt();
         bolt.setOwner(owner);
 
         return bolt;
     }
 
+    public static Instant getLightningBolt() {
+        TargetedEffect<Creature> boltEffect = new TargetedEffect<>(new CreatureOnBattlefield(), new DamageCreatureEffect(3));
+        Instant bolt = new Instant("Lightning Bolt", boltEffect);
+
+        return bolt;
+    }
+
     public static Instant getUnmake(Player owner) {
+        Instant unmake = getUnmake();
+        unmake.setOwner(owner);
+
+        return unmake;
+    }
+
+    public static Instant getUnmake() {
         TargetedEffect<Creature> unmakeEffect = new TargetedEffect<>(new CreatureOnBattlefield(),
                 new MultiEffect(new LeaveBattlefield(), new ExilePermanent()));
         Instant unmake = new Instant("Unmake", unmakeEffect);
-        unmake.setOwner(owner);
 
         return unmake;
     }
@@ -67,7 +79,7 @@ public class Instant extends Card implements Stackable {
     }
 
     public Instant(String name, TargetedEffect<?>... effects) {
-        super(name);
+        super(name, true);
         this.effects = effects;
     }
 

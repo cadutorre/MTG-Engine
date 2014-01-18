@@ -73,8 +73,7 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
 
         List<Object> legalCardList = new LinkedList<>();
         for (Card c : player.getHand()) {
-            // TODO check if the spell can be cast
-            if (c.isInstantSpeed() || canPlaySorcery)
+            if (c.canCast(engine) && (c.isInstantSpeed() || canPlaySorcery))
                  legalCardList.add(c);
         }
 

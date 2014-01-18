@@ -1,5 +1,6 @@
 package magic.card;
 
+import magic.Engine;
 import magic.Player;
 import magic.Zone;
 
@@ -28,6 +29,10 @@ public abstract class Card {
 
     public Player getOwner() {
         return owner;
+    }
+
+    public boolean canCast(Engine engine) {
+        return true;
     }
 
     public Card(String name, boolean instantSpeed) {

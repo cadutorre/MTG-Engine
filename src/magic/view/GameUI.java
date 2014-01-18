@@ -1,42 +1,47 @@
 package magic.view;
 
 import magic.Engine;
+import magic.GameStateObserver;
 import magic.Player;
+import magic.Stackable;
 import magic.card.Card;
+import magic.card.Spell;
+import magic.controller.PlayerController;
 import magic.effect.*;
 import magic.effect.target.TargetChooser;
-import magic.event.EventListener;
-import magic.event.GainPriority;
-import magic.event.GameEvent;
-import magic.event.StackUpdate;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 
-public class GameUI extends JFrame implements TargetChooser, EventListener {
+public class GameUI extends JFrame implements TargetChooser, GameStateObserver, PlayerController {
 
     @Override
-    public void notifyEvent(GameEvent event) {
-        System.out.println("UI animating " + event);
-        if (event instanceof EnterBattlefield) {
-            EnterBattlefield enter = (EnterBattlefield)event;
+    public void effectExecuted(Effect<?> effect) {
+        System.out.println("UI animating " + effect);
+        if (effect instanceof EnterBattlefield) {
+            EnterBattlefield enter = (EnterBattlefield)effect;
             CardView cardView = CardView.create(enter.getTarget());
             cardViews.put(enter.getTarget(), cardView);
             battlefields.get(enter.getTarget().getController()).addCard(cardView);
-        } else if (event instanceof DrawCard) {
-            DrawCard draw = (DrawCard)event;
+        } else if (effect instanceof DrawCard) {
+            DrawCard draw = (DrawCard)effect;
             for (Card c : draw.getCardsDrawn()) {
                 CardView cardView = CardView.create(c);
                 hands.get(c.getOwner()).addCard(cardView);
             }
-        } else if (event instanceof GainPriority) {
-            Player priority = ((GainPriority)event).player;
-            gainPriority(priority);
-        } else if (event instanceof StackUpdate) {
-            stack.update();
         }
+    }
+
+    @Override
+    public void stackChanged() {
+        stack.update();
+    }
+
+    @Override
+    public void cardPlayed(Player p, Card c) {
+        hands.get(p).removeCard(c);
     }
 
     @Override
@@ -48,17 +53,13 @@ public class GameUI extends JFrame implements TargetChooser, EventListener {
         effect.setTarget(target);
     }
 
-    public void gainPriority(Player player) {
+    public Stackable offerPriority(Player player) {
         // Prompt the player to play a legal card, or pass priority
 
+        // TODO - filter the playable spells based on casting speed
         Object[] legalCards = player.getHand().toArray();
-        Card card = (Card)JOptionPane.showInputDialog(this, "Choose a Card to Play", "You have Priority", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
-        if (card == null) { // When the user hits Cancel
-            engine.passPriority();
-        } else {
-            hands.get(player).removeCard(card);
-            engine.playCard(card);
-        }
+        Spell spell = (Spell)JOptionPane.showInputDialog(this, "Choose a Spell to Cast", player + " has Priority", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
+        return spell;
     }
 
     public GameUI(Engine engine) {

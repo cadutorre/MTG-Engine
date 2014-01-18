@@ -1,10 +1,7 @@
 package magic.effect;
 
-import magic.Engine;
-import magic.event.GameEvent;
+import magic.Stackable;
 
-public interface Effect<T> extends GameEvent {
-    public boolean isLegallyTargeted(Engine engine);
+public interface Effect<T> extends Stackable {
     public void setTarget(T target);
-    public void execute(Engine engine);
 }

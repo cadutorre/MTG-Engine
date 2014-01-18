@@ -1,9 +1,12 @@
 package magic.card.creature;
 
+import magic.Engine;
 import magic.Player;
 import magic.card.Permanent;
+import magic.card.Spell;
+import magic.effect.EnterBattlefield;
 
-public class Creature extends Permanent {
+public class Creature extends Permanent implements Spell {
 
     public static Creature getPillarfieldOx(Player owner) {
         Creature c = new Creature("Pillarfield Ox", 2, 4);
@@ -11,8 +14,15 @@ public class Creature extends Permanent {
         return c;
     }
 
-    public Creature clone() {
-        return new Creature(name, printedPower, printedToughness);
+
+    @Override
+    public boolean isLegallyTargeted(Engine engine) {
+        return true;  // Trivially, there are never targers
+    }
+
+    @Override
+    public void execute(Engine engine) {
+        engine.executeEffect(new EnterBattlefield(this));
     }
 
     public final int printedPower;

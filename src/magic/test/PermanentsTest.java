@@ -28,8 +28,7 @@ public class PermanentsTest {
         EnterBattlefield oxEnters = new EnterBattlefield();
         oxEnters.setTarget(pillarfieldOx);
 
-        engine.placeOnStack(oxEnters);
-        engine.executeTheStack();
+        engine.executeEffect(oxEnters);
 
         assertEquals("Creature is under Player's control", playerOne, pillarfieldOx.getController());
         assertTrue("Player controls the Creature (as Creature)", playerOne.getCreaturesControlled().contains(pillarfieldOx));

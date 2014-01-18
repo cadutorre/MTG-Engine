@@ -2,12 +2,13 @@ package magic.card;
 
 import magic.Engine;
 import magic.Player;
+import magic.Stackable;
 import magic.card.creature.Creature;
 import magic.effect.*;
 import magic.effect.target.CreatureOnBattlefield;
 import magic.effect.target.TargetChooser;
 
-public class Instant extends Card implements Effect {
+public class Instant extends Card implements Stackable {
 
     public static Instant getLightningBolt(Player owner) {
         TargetedEffect<Creature> boltEffect = new TargetedEffect<>(new CreatureOnBattlefield(), new DamageCreatureEffect(3));
@@ -15,11 +16,6 @@ public class Instant extends Card implements Effect {
         bolt.setOwner(owner);
 
         return bolt;
-    }
-
-    public Instant clone() {
-        return new Instant(name);
-        // TODO deep-clone the effects
     }
 
     public static Instant getUnmake(Player owner) {

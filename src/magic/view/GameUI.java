@@ -4,6 +4,7 @@ import magic.*;
 import magic.card.Card;
 import magic.card.Instant;
 import magic.card.Spell;
+import magic.card.creature.Creature;
 import magic.controller.PlayerController;
 import magic.effect.*;
 import magic.effect.target.TargetChooser;
@@ -30,6 +31,10 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
                 CardView cardView = CardView.create(c);
                 hands.get(c.getOwner()).addCard(cardView);
             }
+        } else if (effect instanceof DamageCreatureEffect) {
+            DamageCreatureEffect damage = (DamageCreatureEffect)effect;
+            Creature target = damage.getTarget();
+            battlefields.get(target.getController()).updateCard(target);
         }
     }
 

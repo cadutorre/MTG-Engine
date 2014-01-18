@@ -25,15 +25,15 @@ public class TargetedEffect<T> implements Effect<T> {
     }
 
     public void execute(Engine engine) {
-        effect.execute(engine);
+        engine.executeEffect(effect);
     }
 
-    public TargetedEffect(Targeter<T> targeter, Effect effect) {
+    public TargetedEffect(Targeter<T> targeter, Effect<T> effect) {
         this.targeter = targeter;
         this.effect = effect;
     }
 
     private Targeter<T> targeter;
-    private Effect effect;
+    private Effect<T> effect;
     private T target;
 }

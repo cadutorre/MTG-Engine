@@ -8,6 +8,10 @@ import java.awt.*;
 
 public class CardList extends JPanel {
 
+    public void updateCard(Card c) {
+        cardModel.updateCard(c);
+    }
+
     public void addCard(CardView c) {
         synchronized(this) {
             cardModel.addElement(c);
@@ -35,7 +39,7 @@ public class CardList extends JPanel {
     public CardList(String name) {
         setBorder(new TitledBorder(name));
 
-        cardModel = new DefaultListModel<>();
+        cardModel = new CardListModel();
 
         cards = new JList<>(cardModel);
         cards.setCellRenderer(new CardRenderer());
@@ -58,7 +62,18 @@ public class CardList extends JPanel {
         }
     }
 
-    private DefaultListModel<CardView> cardModel;
+    private class CardListModel extends DefaultListModel<CardView> {
+        void updateCard(Card c) {
+            for (int i = 0; i<size(); ++i) {
+                if (getElementAt(i).card == c) {
+                    fireContentsChanged(CardList.this, i, i);
+                    return;
+                }
+            }
+        }
+    }
+
+    private CardListModel cardModel;
     private JList<CardView> cards;
     private JScrollPane cardScroller;
 }

@@ -26,18 +26,31 @@ public class CardView extends JComponent {
         return card;
     }
 
+    public void setTapped(boolean tapped) {
+        rotate = tapped;
+        if (rotate)
+            setPreferredSize(new Dimension(HEIGHT, WIDTH));
+        else
+            setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    }
+
     @Override
     public void paint(Graphics g) {
+        if (rotate) {
+            Graphics2D g2 = (Graphics2D)g;
+            g2.rotate(-Math.PI/2, WIDTH/2, WIDTH/2);
+        }
+
         if (fontMetrics == null) {
             fontMetrics = g.getFontMetrics(font);
             fontHeight = fontMetrics.getHeight();
         }
 
         g.setColor(Color.BLACK);
-        g.fillRoundRect(0, 0, getWidth(), getHeight(), inset, inset);
+        g.fillRoundRect(0, 0, WIDTH, HEIGHT, inset, inset);
 
         g.setColor(Color.WHITE);
-        g.fillRect(inset, inset, getWidth()-inset*2, getHeight()-inset*2);
+        g.fillRect(inset, inset, WIDTH-inset*2, HEIGHT-inset*2);
 
         g.setColor(Color.BLACK);
         g.setFont(font);
@@ -52,12 +65,14 @@ public class CardView extends JComponent {
 
     public CardView(Card card) {
         this.card = card;
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setMaximumSize(new Dimension(WIDTH, HEIGHT));
         inset = 5;
         font = new Font("Ariel", Font.PLAIN, 12);
+
+        setTapped(false);
     }
 
     protected Card card;
     protected int inset;
+
+    private boolean rotate;
 }

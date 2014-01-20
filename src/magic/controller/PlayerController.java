@@ -1,5 +1,6 @@
 package magic.controller;
 
+import magic.Combat;
 import magic.Player;
 import magic.Stackable;
 
@@ -12,4 +13,8 @@ public interface PlayerController {
      * and be sure that it can be activated legally
      */
     public Stackable offerPriority(Player player, boolean canPlaySorcery);
+
+    public void declareAttackers(Player p, Combat c);
+
+    public void declareBlockers(Player p, Combat c);
 }

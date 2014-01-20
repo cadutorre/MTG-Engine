@@ -119,6 +119,14 @@ public class Engine {
             o.stepChanged(step);
     }
 
+    public void setCombat(Combat combat) {
+        this.combat = combat;
+    }
+
+    public Combat getCombat() {
+        return combat;
+    }
+
     public Stack<Stackable> getTheStack() {
         return theStack;
     }
@@ -137,6 +145,10 @@ public class Engine {
 
     public void setController(GameController controller) {
         this.controller = controller;
+    }
+
+    public GameController getController() {
+        return controller;
     }
 
     /**
@@ -234,6 +246,7 @@ public class Engine {
 
     private Phase currentPhase;
     private Step currentStep;
+    private Combat combat;
     private Player activePlayer;
     private Player[] players;
     private LinkedList<GameStateObserver> observers;

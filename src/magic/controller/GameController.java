@@ -39,6 +39,14 @@ public class GameController {
         playerControllers.put(p, c);
     }
 
+    public void declareAttackers(Player p) {
+        playerControllers.get(p).declareAttackers(p, engine.getCombat());
+    }
+
+    public void declareBlockers(Player p) {
+        playerControllers.get(p).declareBlockers(p, engine.getCombat());
+    }
+
     public GameController(Engine engine, GameUI ui) {
         this.engine = engine;
         this.ui = ui;

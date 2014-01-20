@@ -43,8 +43,8 @@ public class CardList extends JPanel {
 
         cards = new JList<>(cardModel);
         cards.setCellRenderer(new CardRenderer());
-        cards.setFixedCellHeight(CardView.HEIGHT + 20);
-        cards.setFixedCellWidth(CardView.WIDTH + 20);
+        //cards.setFixedCellHeight(CardView.HEIGHT + 20);
+        //cards.setFixedCellWidth(CardView.WIDTH + 20);
         cards.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         cards.setVisibleRowCount(1);
 

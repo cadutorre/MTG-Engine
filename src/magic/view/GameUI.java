@@ -3,6 +3,7 @@ package magic.view;
 import magic.*;
 import magic.card.Card;
 import magic.card.Instant;
+import magic.card.Permanent;
 import magic.card.Spell;
 import magic.card.creature.Creature;
 import magic.controller.PlayerController;
@@ -34,6 +35,16 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         } else if (effect instanceof DamageCreatureEffect) {
             DamageCreatureEffect damage = (DamageCreatureEffect)effect;
             Creature target = damage.getTarget();
+            battlefields.get(target.getController()).updateCard(target);
+        } else if (effect instanceof TapPermanentEffect) {
+            Permanent target = ((TapPermanentEffect)effect).getTarget();
+            CardView view = cardViews.get(target);
+            view.setTapped(true);
+            battlefields.get(target.getController()).updateCard(target);
+        } else if (effect instanceof UntapPermanentEffect) {
+            Permanent target = ((UntapPermanentEffect)effect).getTarget();
+            CardView view = cardViews.get(target);
+            view.setTapped(false);
             battlefields.get(target.getController()).updateCard(target);
         }
     }
@@ -76,6 +87,31 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         T target = (T)JOptionPane.showInputDialog(this, effect.toString(), "Choose a target", JOptionPane.QUESTION_MESSAGE, null, targets, null);
 
         effect.setTarget(target);
+    }
+
+    @Override
+    public void declareAttackers(Player attackingPlayer, Combat combat) {
+        while (true) {
+            List<Creature> legalAttackers = new LinkedList<>();
+            for (Creature c : attackingPlayer.getCreaturesControlled()) {
+                if (!c.isTapped() && !combat.isAttacking(c))
+                    legalAttackers.add(c);
+            }
+
+            if (legalAttackers.isEmpty())
+                return;
+
+            Object[] legalAttackerArray = legalAttackers.toArray();
+            Creature attacker = (Creature)JOptionPane.showInputDialog(this, "Declare Attackers", "Choose a Creature", JOptionPane.QUESTION_MESSAGE, null, legalAttackerArray, null);
+            if (attacker == null)
+                return;
+            combat.addAttacker(attacker);
+        }
+    }
+
+    @Override
+    public void declareBlockers(Player defendingPlayer, Combat combat) {
+
     }
 
     public Stackable offerPriority(Player player, boolean canPlaySorcery) {

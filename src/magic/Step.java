@@ -1,13 +1,17 @@
 package magic;
 
+import magic.card.Permanent;
 import magic.effect.DrawCard;
+import magic.effect.UntapPermanentEffect;
 
 public enum Step {
     // Beginning Phase
     UNTAP {
         public void doStep(Engine engine) {
             engine.setStep(this);
-            // TODO untap the permanents
+
+            for (Permanent p : engine.getActivePlayer().getPermanentsControlled())
+                engine.executeEffect(new UntapPermanentEffect(p));
         }
     },
     UPKEEP {
@@ -27,13 +31,18 @@ public enum Step {
     // Combat Phase
     BEGINNING_COMBAT {
         public void doStep(Engine engine) {
+            engine.setCombat(new Combat(engine));
             engine.setStep(this);
+
             engine.passPriority();
         }
     },
     DECLARE_ATTACKERS {
         public void doStep(Engine engine) {
             engine.setStep(this);
+
+            engine.getController().declareAttackers(engine.getActivePlayer());
+            engine.passPriority();
         }
     },
     DECLARE_BLOCKERS {

@@ -11,12 +11,12 @@ public class CreatureCardView extends CardView {
         String toughness = creature.getCurrentToughness() + "";
         int toughnessWidth = fontMetrics.stringWidth(toughness);
         g.setColor(creature.getCurrentToughness() < creature.printedToughness ? Color.RED : Color.BLACK);
-        g.drawString(toughness, getWidth()-inset-2-toughnessWidth, getHeight()-inset-2);
+        g.drawString(toughness, WIDTH-inset-2-toughnessWidth, HEIGHT-inset-2);
 
         String power = creature.getCurrentPower() + "/";
         int powerWidth = fontMetrics.stringWidth(power);
         g.setColor(Color.black);
-        g.drawString(power, getWidth()-inset-2-toughnessWidth-powerWidth, getHeight()-inset-2);
+        g.drawString(power, WIDTH-inset-2-toughnessWidth-powerWidth, HEIGHT-inset-2);
     }
 
     public CreatureCardView(Creature creature) {

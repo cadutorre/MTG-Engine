@@ -1,6 +1,7 @@
 package magic;
 
 import magic.card.Card;
+import magic.card.creature.Creature;
 import magic.controller.GameController;
 import magic.effect.*;
 import magic.effect.trigger.EffectReplacer;
@@ -197,12 +198,24 @@ public class Engine {
         battlefield = new Battlefield();
     }
 
+    private void stateBasedActions() {
+         for (Creature c : battlefield.getCreatures()) {
+             if (c.getCurrentToughness() <= 0) {
+                 // kill the creature
+                 executeEffect(new LeaveBattlefield(c));
+                 executeEffect(new EnterGraveyard(c));
+             }
+         }
+    }
+
     /**
      * Give a Player a chance to put a Spell or Ability onto the Stack.
      * If the Player does not pass priority the Stack will be updated by that Player
      * @return whether the Player accepts Priority and plays a Spell or Ability
      */
     private boolean offerPriority(Player p) {
+        stateBasedActions();
+
         boolean canPlaySorcerySpeed =
                 theStack.isEmpty()
              && p == activePlayer
@@ -239,8 +252,6 @@ public class Engine {
         } else {
             System.out.println("Not resolving: " + top);
         }
-
-        // TODO do state-based action happen here?
     }
 
     private GameController controller;

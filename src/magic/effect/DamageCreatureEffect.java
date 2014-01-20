@@ -23,17 +23,6 @@ public class DamageCreatureEffect implements Effect<Creature> {
         System.out.println(this);
 
         target.reduceToughness(amount);
-
-        if (target.getCurrentToughness() <= 0) {
-            System.out.println(" - lethal damage");
-
-            // kill the creature
-            // TODO - Maybe this shouldn't always happen immediately - for example, after a Combat Phase
-            engine.executeEffect(new LeaveBattlefield(target));
-            engine.executeEffect(new EnterGraveyard(target));
-        } else {
-            System.out.println(" - new toughness: " + target.getCurrentToughness());
-        }
     }
 
     public String toString() {

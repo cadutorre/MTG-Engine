@@ -7,8 +7,9 @@ import magic.card.Permanent;
 public class ExilePermanent implements Effect<Permanent> {
 
     public void execute(Engine engine) {
-        // TODO - should this trigger its own LeaveBattlefield effect?
         System.out.println(this);
+
+        engine.executeEffect(new LeaveBattlefield(target));
         target.setZone(Zone.EXILE);
         // TODO put the creature in the exile zone
     }

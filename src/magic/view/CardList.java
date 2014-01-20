@@ -19,12 +19,10 @@ public class CardList extends JPanel {
     }
 
     public void removeCard(Card card) {
-        synchronized(this) {
-            for (int i = 0; i<cardModel.size(); ++i) {
-                if (cardModel.getElementAt(i).getCard() == card) {
-                    cardModel.remove(i);
-                    return;
-                }
+        for (int i = 0; i<cardModel.size(); ++i) {
+            if (cardModel.getElementAt(i).getCard() == card) {
+                cardModel.remove(i);
+                return;
             }
         }
 

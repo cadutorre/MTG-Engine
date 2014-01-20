@@ -1,25 +1,24 @@
 package magic.card.creature;
 
 import magic.Engine;
-import magic.Player;
 import magic.card.Permanent;
 import magic.card.Spell;
 import magic.effect.EnterBattlefield;
-import magic.mana.ManaColor;
 import magic.mana.ManaCost;
 
 import java.util.HashSet;
 
 public class Creature extends Permanent implements Spell {
 
-    public static Creature getPillarfieldOx(Player owner) {
-        Creature c = new Creature("Pillarfield Ox", new ManaCost(3, ManaColor.WHITE), 2, 4);
-        c.setOwner(owner);
-        return c;
-    }
-
     public final int printedPower;
     public final int printedToughness;
+
+    public Creature clone() {
+        Creature clone = new Creature(name, getCost(), printedPower, printedToughness);
+        for (String keyword : keywords)
+            clone.keywords.add(keyword); // TODO only printed keywords are probably copyable
+        return clone;
+    }
 
     public boolean hasKeyword(String keyword) {
         return keywords.contains(keyword);

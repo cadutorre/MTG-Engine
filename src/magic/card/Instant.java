@@ -41,6 +41,10 @@ public class Instant extends Card implements Stackable, Spell {
         return unmake;
     }
 
+    public Instant clone() {
+        return null; // TODO implement a deep clone
+    }
+
     @Override
     public boolean isLegallyTargeted(Engine engine) {
         for (TargetedEffect<?> e : effects) {

@@ -39,6 +39,27 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
     }
 
     @Override
+    public void turnChanged(Player player) {
+        status.setPlayerTurn(player);
+    }
+
+    @Override
+    public void phaseChanged(Phase phase) {
+        status.setPhase(phase);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void stepChanged(Step step) {
+         status.setStep(step);
+    }
+
+    @Override
     public void stackChanged() {
         stack.update();
     }
@@ -55,22 +76,6 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         T target = (T)JOptionPane.showInputDialog(this, effect.toString(), "Choose a target", JOptionPane.QUESTION_MESSAGE, null, targets, null);
 
         effect.setTarget(target);
-    }
-
-    @Override
-    public void turnChanged(Player player) {
-        status.setPlayerTurn(player);
-    }
-
-    @Override
-    public void phaseChanged(Phase phase) {
-        status.setPhase(phase);
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public Stackable offerPriority(Player player, boolean canPlaySorcery) {

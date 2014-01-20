@@ -10,4 +10,5 @@ public interface GameStateObserver {
     public void effectExecuted(Effect<?> e);
     public void turnChanged(Player player);
     public void phaseChanged(Phase phase);
+    public void stepChanged(Step step);
 }

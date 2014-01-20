@@ -64,79 +64,6 @@ public class Engine {
             o.stackChanged();
     }
 
-    public void beginTurn(Player p) {
-        setPhase(Phase.BEGINNING);
-
-        activePlayer = p;
-        for (GameStateObserver o : observers)
-            o.turnChanged(activePlayer);
-
-        // TODO upkeep step - untap permanents
-
-        executeEffect(new DrawCard(activePlayer, 1));
-
-        passPriority();
-
-        // TODO end the phase
-
-        mainPhase();
-    }
-
-    /**
-     * TODO - this should be private, but for now testing will be easier if we can initiate this
-     */
-    public void mainPhase() {
-        setPhase(Phase.FIRST_MAIN_PHASE);
-
-        passPriority();
-
-        // TODO end the phase (empty mana pool)
-
-        combat();
-    }
-
-    public void combat() {
-        setPhase(Phase.COMBAT_PHASE);
-
-        // TODO declare attackers
-
-        // TODO pass priority
-
-        // TODO declare blockers
-
-        // TODO pass priority
-
-        // TODO resolve combat (turn-based actions!)
-
-        // TODO do triggers resolve before priority passes?
-
-        secondMainPhase();
-    }
-
-    public void secondMainPhase() {
-        setPhase(Phase.SECOND_MAIN_PHASE);
-
-        passPriority();
-
-        // TODO end the phase
-
-        endPhase();
-    }
-
-    public void endPhase() {
-        setPhase(Phase.ENDING);
-
-        passPriority();
-
-        // TODO end the phase
-
-        // TODO end of turn triggers
-
-        // TODO discard step
-
-        beginTurn(playerAfter(activePlayer));
-    }
-
     /**
      * This method should only be called in Unit Tests
      */
@@ -161,6 +88,37 @@ public class Engine {
         return players;
     }
 
+    public Player getActivePlayer() {
+        return activePlayer;
+    }
+
+    public void setActivePlayer(Player p) {
+        activePlayer = p;
+
+        for (GameStateObserver o : observers)
+            o.turnChanged(p);
+    }
+
+    public Player playerAfter(Player p) {
+        for (int i = 0; i<players.length-1; ++i) {
+            if (p == players[i])
+                return players[i+1];
+        }
+        return players[0];
+    }
+
+    public void setPhase(Phase phase) {
+        currentPhase = phase;
+        for (GameStateObserver o : observers)
+            o.phaseChanged(phase);
+    }
+
+    public void setStep(Step step) {
+        currentStep = step;
+        for (GameStateObserver o : observers)
+            o.stepChanged(step);
+    }
+
     public Stack<Stackable> getTheStack() {
         return theStack;
     }
@@ -170,23 +128,15 @@ public class Engine {
     }
 
     public void beginGame() {
-        for (Player player : players)
-            executeEffect(new DrawCard(player, 7));
+        for (Player p : players)
+            executeEffect(new DrawCard(p, 7));
 
-        beginTurn(players[0]);
+        setActivePlayer(players[0]);
+        Phase.BEGINNING.doPhase(this);
     }
 
     public void setController(GameController controller) {
         this.controller = controller;
-    }
-
-    public Engine(Player... players) {
-        this.players = players;
-        observers = new LinkedList<>();
-        replacers = new LinkedList<>();
-        triggers = new LinkedList<>();
-        theStack = new Stack<>();
-        battlefield = new Battlefield();
     }
 
     /**
@@ -199,7 +149,7 @@ public class Engine {
      * When all Players pass Priority in a row, the Stack is popped - or, if the stack is empty, the process
      * is complete.
      */
-    private void passPriority() {
+    public void passPriority() {
         // proceeding in APNAP order, offer priority to each player
         int numPasses = 0; // the number of players that have passed in a row
 
@@ -223,6 +173,15 @@ public class Engine {
                 break;
             }
         }
+    }
+
+    public Engine(Player... players) {
+        this.players = players;
+        observers = new LinkedList<>();
+        replacers = new LinkedList<>();
+        triggers = new LinkedList<>();
+        theStack = new Stack<>();
+        battlefield = new Battlefield();
     }
 
     /**
@@ -271,23 +230,10 @@ public class Engine {
         // TODO do state-based action happen here?
     }
 
-    private Player playerAfter(Player p) {
-        for (int i = 0; i<players.length-1; ++i) {
-            if (p == players[i])
-                return players[i+1];
-        }
-        return players[0];
-    }
-
-    private void setPhase(Phase phase) {
-        currentPhase = phase;
-        for (GameStateObserver o : observers)
-            o.phaseChanged(phase);
-    }
-
     private GameController controller;
 
     private Phase currentPhase;
+    private Step currentStep;
     private Player activePlayer;
     private Player[] players;
     private LinkedList<GameStateObserver> observers;

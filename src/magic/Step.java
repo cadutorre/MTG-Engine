@@ -1,6 +1,7 @@
 package magic;
 
 import magic.card.Permanent;
+import magic.card.creature.Creature;
 import magic.effect.DrawCard;
 import magic.effect.UntapPermanentEffect;
 
@@ -58,6 +59,10 @@ public enum Step {
     COMBAT_DAMAGE {
         public void doStep(Engine engine) {
             engine.setStep(this);
+
+            // TODO 510.5 if there are first strike and/or double strike creatures, perform an extra combat step
+
+            engine.getCombat().doCombatDamage();
         }
     },
     END_COMBAT {
@@ -77,7 +82,9 @@ public enum Step {
         public void doStep(Engine engine) {
             engine.setStep(this);
             // TODO discard
-            // TODO reset damage
+
+            for (Creature c : engine.getBattlefield().getCreatures())
+                c.resetPowerToughness();
         }
     };
 

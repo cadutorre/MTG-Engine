@@ -20,7 +20,6 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
 
     @Override
     public void effectExecuted(Effect<?> effect) {
-        System.out.println("UI animating " + effect);
         if (effect instanceof EnterBattlefield) {
             EnterBattlefield enter = (EnterBattlefield)effect;
             CardView cardView = CardView.create(enter.getTarget());
@@ -36,6 +35,14 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
             DamageCreatureEffect damage = (DamageCreatureEffect)effect;
             Creature target = damage.getTarget();
             battlefields.get(target.getController()).updateCard(target);
+        } else if (effect instanceof CombatDamage) {
+            CombatDamage damage = (CombatDamage)effect;
+            if (damage.targetsCreature()) {
+                Creature target = (Creature)damage.getTarget();
+                battlefields.get(target.getController()).updateCard(target);
+            } else {
+                status.lifeChanged();
+            }
         } else if (effect instanceof TapPermanentEffect) {
             Permanent target = ((TapPermanentEffect)effect).getTarget();
             CardView view = cardViews.get(target);
@@ -192,7 +199,7 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
             battlefields.put(p, creatures);
         }
 
-        status = new TurnStatusView();
+        status = new TurnStatusView(engine);
         getContentPane().add(status, BorderLayout.NORTH);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);

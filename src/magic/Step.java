@@ -48,6 +48,11 @@ public enum Step {
     DECLARE_BLOCKERS {
         public void doStep(Engine engine) {
             engine.setStep(this);
+
+            // TODO only prompt defending players, not necessarily a two player game
+            if (!engine.getCombat().getAttackers().isEmpty())
+                engine.getController().declareBlockers(engine.playerAfter(engine.getActivePlayer()));
+            engine.passPriority();
         }
     },
     COMBAT_DAMAGE {

@@ -102,7 +102,7 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
                 return;
 
             Object[] legalAttackerArray = legalAttackers.toArray();
-            Creature attacker = (Creature)JOptionPane.showInputDialog(this, "Declare Attackers", "Choose a Creature", JOptionPane.QUESTION_MESSAGE, null, legalAttackerArray, null);
+            Creature attacker = (Creature)JOptionPane.showInputDialog(this, "Choose a Creature", "Declare Attackers", JOptionPane.QUESTION_MESSAGE, null, legalAttackerArray, null);
             if (attacker == null)
                 return;
             combat.addAttacker(attacker);
@@ -111,7 +111,26 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
 
     @Override
     public void declareBlockers(Player defendingPlayer, Combat combat) {
+        while (true) {
+            List<Creature> legalBlockers = new LinkedList<>();
+            for (Creature c : defendingPlayer.getCreaturesControlled()) {
+                if (!c.isTapped() && !combat.isBlocking(c))
+                    legalBlockers.add(c);
+            }
 
+            if (legalBlockers.isEmpty())
+                return;
+
+            Object[] legalBlocksArray = legalBlockers.toArray();
+            Creature blocker = (Creature)JOptionPane.showInputDialog(this, "Choose a Creature", "Declare Blockers", JOptionPane.QUESTION_MESSAGE, null, legalBlocksArray, null);
+            if (blocker == null)
+                return;
+
+            Object[] attackers = combat.getAttackers().toArray();
+            Creature attacker = (Creature)JOptionPane.showInputDialog(this, "Choose an Attacking Creature to Block", "Declare Blockers", JOptionPane.QUESTION_MESSAGE, null, attackers, null);
+
+            combat.addBlocker(blocker, attacker);
+        }
     }
 
     public Stackable offerPriority(Player player, boolean canPlaySorcery) {

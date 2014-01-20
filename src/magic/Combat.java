@@ -14,8 +14,16 @@ public class Combat {
         engine.executeEffect(new TapPermanentEffect(c));
     }
 
+    public HashSet<Creature> getAttackers() {
+        return attackers;
+    }
+
     public boolean isAttacking(Creature c) {
         return attackers.contains(c);
+    }
+
+    public boolean isBlocking(Creature c) {
+        return blockers.containsKey(c);
     }
 
     public void addBlocker(Creature blocker, Creature attacker) {

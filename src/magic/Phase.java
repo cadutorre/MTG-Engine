@@ -1,9 +1,14 @@
 package magic;
 
+import magic.card.creature.Creature;
+
 public enum Phase {
     BEGINNING("Beginning Phase") {
         public void doPhase(Engine engine) {
             engine.setPhase(this);
+
+            for (Creature c : engine.getActivePlayer().getCreaturesControlled())
+                c.setSummoningSickness(false);
 
             Step.UNTAP.doStep(engine);
             Step.UPKEEP.doStep(engine);

@@ -102,11 +102,7 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
     @Override
     public void declareAttackers(Player attackingPlayer, Combat combat) {
         while (true) {
-            List<Creature> legalAttackers = new LinkedList<>();
-            for (Creature c : attackingPlayer.getCreaturesControlled()) {
-                if (!c.isTapped() && !combat.isAttacking(c))
-                    legalAttackers.add(c);
-            }
+            List<Creature> legalAttackers = combat.getLegalAttackers();
 
             if (legalAttackers.isEmpty())
                 return;

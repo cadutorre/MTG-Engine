@@ -6,6 +6,8 @@ import magic.card.Permanent;
 import magic.card.Spell;
 import magic.effect.EnterBattlefield;
 
+import java.util.HashSet;
+
 public class Creature extends Permanent implements Spell {
 
     public static Creature getPillarfieldOx(Player owner) {
@@ -14,19 +16,30 @@ public class Creature extends Permanent implements Spell {
         return c;
     }
 
+    public final int printedPower;
+    public final int printedToughness;
+
+    public boolean hasKeyword(String keyword) {
+        return keywords.contains(keyword);
+    }
+
+    public void setSummoningSickness(boolean has) {
+        hasSummoningSickness = !hasKeyword("Haste") && has;
+    }
+
+    public boolean hasSummoningSickness() {
+        return hasSummoningSickness;
+    }
 
     @Override
     public boolean isLegallyTargeted(Engine engine) {
-        return true;  // Trivially, there are never targers
+        return true;  // Trivially, there are never targets
     }
 
     @Override
     public void execute(Engine engine) {
         engine.executeEffect(new EnterBattlefield(this));
     }
-
-    public final int printedPower;
-    public final int printedToughness;
 
     public void modifyPowerToughness(int power, int toughness) {
         currentPower += power;
@@ -69,9 +82,12 @@ public class Creature extends Permanent implements Spell {
         printedToughness = toughness;
         currentPower = power;
         currentToughness = toughness;
+        keywords = new HashSet<>();
     }
 
     private int currentPower;
     private int currentToughness;
     private int oneOneCounters;
+    private HashSet<String> keywords;
+    private boolean hasSummoningSickness;
 }

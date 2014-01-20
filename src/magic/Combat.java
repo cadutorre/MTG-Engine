@@ -22,6 +22,19 @@ public class Combat {
         return attackers;
     }
 
+    /**
+     * All Creatures the Attacking Player controls that can participate in this Combat.
+     * The Creatures must be untapped, and be unaffected by Summoning Sickness
+     */
+    public List<Creature> getLegalAttackers() {
+        LinkedList<Creature> legalAttackers = new LinkedList<>();
+        for (Creature c : engine.getActivePlayer().getCreaturesControlled()) {
+            if (!c.isTapped() && !c.hasSummoningSickness())
+                legalAttackers.add(c);
+        }
+        return legalAttackers;
+    }
+
     public boolean isAttacking(Creature c) {
         return attackers.contains(c);
     }

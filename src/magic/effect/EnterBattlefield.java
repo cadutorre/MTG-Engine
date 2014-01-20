@@ -2,6 +2,7 @@ package magic.effect;
 
 import magic.Engine;
 import magic.card.Permanent;
+import magic.card.creature.Creature;
 
 public class EnterBattlefield implements Effect<Permanent> {
 
@@ -11,6 +12,8 @@ public class EnterBattlefield implements Effect<Permanent> {
 
     public void execute(Engine engine) {
         System.out.println(this);
+        if (permanent instanceof Creature)
+            ((Creature)permanent).setSummoningSickness(true);
         permanent.getOwner().gainControl(permanent);
         engine.getBattlefield().enterBattlefield(permanent);
     }

@@ -7,6 +7,7 @@ import magic.card.creature.Creature;
 import magic.effect.EnterBattlefield;
 import magic.effect.EnterGraveyard;
 import magic.effect.LeaveBattlefield;
+import magic.mana.ManaCost;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +24,7 @@ public class PermanentsTest {
         Player playerOne = new Player("Player 1");
         Engine engine = new Engine();
 
-        Creature pillarfieldOx = new Creature("Pillarfield Ox", 2, 4);
+        Creature pillarfieldOx = new Creature("Pillarfield Ox", new ManaCost(), 2, 4);
         pillarfieldOx.setOwner(playerOne);
         EnterBattlefield oxEnters = new EnterBattlefield();
         oxEnters.setTarget(pillarfieldOx);
@@ -38,7 +39,7 @@ public class PermanentsTest {
     @Test
     public void testZones() {
         Engine engine = new Engine();
-        Creature ox = new Creature("Pillarfield Ox", 2, 4);
+        Creature ox = new Creature("Pillarfield Ox", new ManaCost(), 2, 4);
         ox.setOwner(new Player("Player One"));
         EnterBattlefield oxEnters = new EnterBattlefield();
         oxEnters.setTarget(ox);

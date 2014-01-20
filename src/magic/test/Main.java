@@ -8,6 +8,7 @@ import magic.effect.*;
 import magic.effect.trigger.EffectPredicate;
 import magic.effect.trigger.EffectReplacer;
 import magic.effect.trigger.EffectTrigger;
+import magic.mana.ManaCost;
 
 public class Main {
     public static void main(String... args) {
@@ -22,13 +23,13 @@ public class Main {
 
         DamageCreatureEffect shock = new DamageCreatureEffect(2);
 
-        Creature bear = new Creature("Bear", 2, 2);
+        Creature bear = new Creature("Bear", new ManaCost(), 2, 2);
         bear.setZone(Zone.BATTLEFIELD);
         shock.setTarget(bear);
         engine.placeOnStack(shock);
         engine.executeTheStack();
 
-        final Creature ox = new Creature("Pillarfield Ox", 2, 4);
+        final Creature ox = new Creature("Pillarfield Ox", new ManaCost(), 2, 4);
         ox.setZone(Zone.BATTLEFIELD);
         EffectTrigger oneOneWhenDamaged = new EffectTrigger(EffectPredicate.thisCreatureDealtDamage(ox)) {
             @Override

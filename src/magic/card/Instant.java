@@ -7,6 +7,8 @@ import magic.card.creature.Creature;
 import magic.effect.*;
 import magic.effect.target.CreatureOnBattlefield;
 import magic.effect.target.TargetChooser;
+import magic.mana.ManaColor;
+import magic.mana.ManaCost;
 
 public class Instant extends Card implements Stackable, Spell {
 
@@ -19,7 +21,7 @@ public class Instant extends Card implements Stackable, Spell {
 
     public static Instant getLightningBolt() {
         TargetedEffect<Creature> boltEffect = new TargetedEffect<>(new CreatureOnBattlefield(), new DamageCreatureEffect(3));
-        Instant bolt = new Instant("Lightning Bolt", boltEffect);
+        Instant bolt = new Instant("Lightning Bolt", new ManaCost(ManaColor.RED), boltEffect);
 
         return bolt;
     }
@@ -34,7 +36,7 @@ public class Instant extends Card implements Stackable, Spell {
     public static Instant getUnmake() {
         TargetedEffect<Creature> unmakeEffect = new TargetedEffect<>(new CreatureOnBattlefield(),
                 new MultiEffect(new LeaveBattlefield(), new ExilePermanent()));
-        Instant unmake = new Instant("Unmake", unmakeEffect);
+        Instant unmake = new Instant("Unmake", new ManaCost(), unmakeEffect);
 
         return unmake;
     }
@@ -78,8 +80,8 @@ public class Instant extends Card implements Stackable, Spell {
         return effects;
     }
 
-    public Instant(String name, TargetedEffect<?>... effects) {
-        super(name, true);
+    public Instant(String name, ManaCost cost, TargetedEffect<?>... effects) {
+        super(name, cost, true);
         this.effects = effects;
     }
 

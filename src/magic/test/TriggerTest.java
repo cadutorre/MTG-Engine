@@ -6,6 +6,7 @@ import magic.card.creature.Creature;
 import magic.effect.DamageCreatureEffect;
 import magic.effect.trigger.EffectPredicate;
 import magic.effect.trigger.TestTrigger;
+import magic.mana.ManaCost;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -15,10 +16,10 @@ public class TriggerTest {
     public void testDamageTriggers() {
         Engine engine = new Engine();
 
-        Creature ox = new Creature("Pillarfield Ox", 2, 4);
+        Creature ox = new Creature("Pillarfield Ox", new ManaCost(), 2, 4);
         ox.setZone(Zone.BATTLEFIELD);
 
-        Creature bear = new Creature("Some Bear", 2, 2);
+        Creature bear = new Creature("Some Bear", new ManaCost(), 2, 2);
         bear.setZone(Zone.BATTLEFIELD);
 
         TestTrigger testWhenOxDamaged = new TestTrigger(EffectPredicate.thisCreatureDealtDamage(ox));

@@ -5,6 +5,7 @@ import magic.Player;
 import magic.card.Instant;
 import magic.card.creature.Creature;
 import magic.effect.target.TestTargeter;
+import magic.mana.ManaCost;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -18,7 +19,7 @@ public class SpellTest {
         Player playerOne = new Player("Player One");
         TestTargeter testTargets = new TestTargeter();
         Instant lightning = Instant.getLightningBolt(playerOne);
-        Creature ox = new Creature("Pillarfield Ox", 2, 4);
+        Creature ox = new Creature("Pillarfield Ox", new ManaCost(), 2, 4);
 
         assertFalse("Card in hand is not a valid target", lightning.canCast(engine));
 

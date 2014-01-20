@@ -2,9 +2,11 @@ package magic.view;
 
 import magic.card.Card;
 import magic.card.creature.Creature;
+import magic.mana.ManaColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Color;
 
 public class CardView extends JComponent {
 
@@ -38,7 +40,7 @@ public class CardView extends JComponent {
     public void paint(Graphics g) {
         if (rotate) {
             Graphics2D g2 = (Graphics2D)g;
-            g2.rotate(-Math.PI/2, WIDTH/2, WIDTH/2);
+            g2.rotate(-Math.PI / 2, WIDTH / 2, WIDTH / 2);
         }
 
         if (fontMetrics == null) {
@@ -55,6 +57,52 @@ public class CardView extends JComponent {
         g.setColor(Color.BLACK);
         g.setFont(font);
         g.drawString(card.name, inset + 2, inset + fontHeight + 2);
+
+        // Mana cost
+        int numManas = 0;
+        int manaWidth = 10;
+        for (ManaColor c : ManaColor.COLORS) {
+            if (card.getCost().containsColor(c))
+                numManas += card.getCost().getColorAmount(c);
+        }
+
+        if (numManas == 0) {
+            int x = WIDTH - inset - manaWidth;
+            g.setColor(ManaColor.COLORLESS.color);
+            g.fillOval(x, inset, manaWidth, manaWidth);
+            g.setColor(Color.black);
+            g.drawOval(x, inset, manaWidth, manaWidth);
+            int textX = x + manaWidth/2 - fontMetrics.stringWidth("0")/2;
+            g.drawString("0", textX, inset+manaWidth);
+            x += manaWidth;
+        } else {
+            if (card.getCost().containsColor(ManaColor.COLORLESS))
+                ++numManas;
+            int x = WIDTH - inset - numManas*manaWidth;
+
+            for (ManaColor c : ManaColor.values()) {
+                if (card.getCost().containsColor(c)) {
+                    if (c == ManaColor.COLORLESS) {
+                        g.setColor(c.color);
+                        g.fillOval(x, inset, manaWidth, manaWidth);
+                        g.setColor(Color.black);
+                        g.drawOval(x, inset, manaWidth, manaWidth);
+                        int textX = x + manaWidth/2 - fontMetrics.stringWidth(""+card.getCost().getColorAmount(ManaColor.COLORLESS))/2;
+                        g.drawString(""+card.getCost().getColorAmount(ManaColor.COLORLESS), textX, inset+manaWidth);
+                        x += manaWidth;
+                    } else {
+                        for (int i = 0; i<card.getCost().getColorAmount(c); ++i) {
+                            g.setColor(c.color);
+                            g.fillOval(x, inset, manaWidth, manaWidth);
+                            g.setColor(Color.black);
+                            g.drawOval(x, inset, manaWidth, manaWidth);
+
+                            x += manaWidth;
+                        }
+                    }
+                }
+            }
+        }
 
         drawContent(g);
     }

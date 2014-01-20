@@ -3,6 +3,7 @@ package magic.card;
 import magic.Engine;
 import magic.Player;
 import magic.Zone;
+import magic.mana.ManaCost;
 
 public abstract class Card {
     public final String name;
@@ -35,13 +36,19 @@ public abstract class Card {
         return true;
     }
 
-    public Card(String name, boolean instantSpeed) {
+    public ManaCost getCost() {
+        return cost;
+    }
+
+    public Card(String name, ManaCost cost, boolean instantSpeed) {
         this.name = name;
+        this.cost = cost;
         this.instantSpeed = instantSpeed;
         zone = Zone.HAND;
     }
 
     private Player owner;
+    private ManaCost cost;
     private Zone zone;
     private boolean instantSpeed;
 }

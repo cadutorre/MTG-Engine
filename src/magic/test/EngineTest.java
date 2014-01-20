@@ -5,6 +5,7 @@ import magic.Zone;
 import magic.card.creature.Creature;
 import magic.effect.DamageCreatureEffect;
 import magic.effect.TestEffect;
+import magic.mana.ManaCost;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -24,7 +25,7 @@ public class EngineTest {
         TestEffect.beginTesting();
         Engine engine = new Engine();
 
-        Creature ox = new Creature("Pillarfield Ox", 2, 4);
+        Creature ox = new Creature("Pillarfield Ox", new ManaCost(), 2, 4);
         ox.setZone(Zone.BATTLEFIELD);
 
         DamageCreatureEffect shockA = new DamageCreatureEffect(2);
@@ -53,7 +54,7 @@ public class EngineTest {
         TestEffect.beginTesting();
         Engine engine = new Engine();
 
-        Creature ox = new Creature("Pillarfield Ox", 2, 4);
+        Creature ox = new Creature("Pillarfield Ox", new ManaCost(), 2, 4);
         ox.setZone(Zone.BATTLEFIELD);
 
         DamageCreatureEffect intoTheMaw = new DamageCreatureEffect(13);
@@ -75,7 +76,7 @@ public class EngineTest {
         TestEffect.beginTesting();
         Engine engine = new Engine();
 
-        Creature ox = new Creature("Pillarfield Ox", 2, 4);
+        Creature ox = new Creature("Pillarfield Ox", new ManaCost(), 2, 4);
         ox.setZone(Zone.BATTLEFIELD);
 
         DamageCreatureEffect intoTheMaw = new DamageCreatureEffect(13);

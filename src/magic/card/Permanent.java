@@ -1,6 +1,7 @@
 package magic.card;
 
 import magic.Player;
+import magic.mana.ManaCost;
 
 public abstract class Permanent extends Card {
 
@@ -24,8 +25,8 @@ public abstract class Permanent extends Card {
         return controller;
     }
 
-    public Permanent(String name) {
-        super(name, false);
+    public Permanent(String name, ManaCost cost) {
+        super(name, cost, false);
     }
 
     private Player controller;

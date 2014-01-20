@@ -5,13 +5,15 @@ import magic.Player;
 import magic.card.Permanent;
 import magic.card.Spell;
 import magic.effect.EnterBattlefield;
+import magic.mana.ManaColor;
+import magic.mana.ManaCost;
 
 import java.util.HashSet;
 
 public class Creature extends Permanent implements Spell {
 
     public static Creature getPillarfieldOx(Player owner) {
-        Creature c = new Creature("Pillarfield Ox", 2, 4);
+        Creature c = new Creature("Pillarfield Ox", new ManaCost(3, ManaColor.WHITE), 2, 4);
         c.setOwner(owner);
         return c;
     }
@@ -76,8 +78,8 @@ public class Creature extends Permanent implements Spell {
                 + name + " (" + getCurrentPower() + "/" + getCurrentToughness() + ")";
     }
 
-    public Creature(String name, int power, int toughness) {
-        super(name);
+    public Creature(String name, ManaCost cost, int power, int toughness) {
+        super(name, cost);
         printedPower = power;
         printedToughness = toughness;
         currentPower = power;

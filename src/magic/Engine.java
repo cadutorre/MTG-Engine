@@ -180,6 +180,7 @@ public class Engine {
 
             if (!theStack.isEmpty()) {
                 popTheStack();
+                numPasses = 0;
             } else {
                 System.out.println("All Players passed priority when the Stack was empty");
                 break;

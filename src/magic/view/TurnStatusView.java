@@ -17,7 +17,7 @@ public class TurnStatusView extends JPanel {
     }
 
     public void setStep(Step step) {
-        this.step.setText(step.toString());
+        this.step.setText(step == null ? "" : step.toString());
     }
 
     public TurnStatusView() {

@@ -15,6 +15,7 @@ public enum Phase {
     FIRST_MAIN_PHASE("First Main Phase") {
         public void doPhase(Engine engine) {
             engine.setPhase(this);
+            engine.setStep(null);
 
             engine.passPriority();
 
@@ -37,6 +38,7 @@ public enum Phase {
     SECOND_MAIN_PHASE("Second Main Phase") {
         public void doPhase(Engine engine) {
             engine.setPhase(this);
+            engine.setStep(null);
 
             engine.passPriority();
 

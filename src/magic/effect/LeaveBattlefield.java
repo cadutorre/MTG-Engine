@@ -20,6 +20,7 @@ public class LeaveBattlefield implements Effect<Permanent> {
     public void execute(Engine engine) {
         System.out.println(this);
         engine.getBattlefield().leaveBattlefield(target);
+        target.leaveBattlefield(engine);
     }
 
     public String toString() {

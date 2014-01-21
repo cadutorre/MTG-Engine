@@ -43,6 +43,8 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
             } else {
                 status.lifeChanged();
             }
+        } else if (effect instanceof LoseLifeEffect) {
+            status.lifeChanged();
         } else if (effect instanceof LeaveBattlefield) {
             Permanent target = ((LeaveBattlefield)effect).getTarget();
             battlefields.get(target.getController()).removeCard(target);

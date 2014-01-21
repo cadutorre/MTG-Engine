@@ -16,6 +16,7 @@ public class EnterBattlefield implements Effect<Permanent> {
             ((Creature)permanent).setSummoningSickness(true);
         permanent.getOwner().gainControl(permanent);
         engine.getBattlefield().enterBattlefield(permanent);
+        permanent.enterBattlefield(engine);
     }
 
     public boolean isLegallyTargeted(Engine engine) {

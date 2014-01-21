@@ -4,6 +4,7 @@ import magic.Engine;
 import magic.card.Permanent;
 import magic.card.Spell;
 import magic.effect.EnterBattlefield;
+import magic.effect.trigger.TriggeredAbility;
 import magic.mana.ManaCost;
 
 import java.util.HashSet;
@@ -15,13 +16,22 @@ public class Creature extends Permanent implements Spell {
 
     public Creature clone() {
         Creature clone = new Creature(name, getCost(), printedPower, printedToughness);
+
         for (String keyword : keywords)
             clone.keywords.add(keyword); // TODO only printed keywords are probably copyable
+
+        for (TriggeredAbility t : getTriggers())
+            clone.addTriggeredAbility(t.clone(clone));
+
         return clone;
     }
 
     public boolean hasKeyword(String keyword) {
         return keywords.contains(keyword);
+    }
+
+    public void addKeyword(String keyword) {
+        keywords.add(keyword);
     }
 
     public void setSummoningSickness(boolean has) {

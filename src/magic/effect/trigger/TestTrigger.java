@@ -3,7 +3,7 @@ package magic.effect.trigger;
 import magic.Engine;
 import magic.effect.Effect;
 
-public class TestTrigger extends EffectTrigger {
+public class TestTrigger extends TriggeredAbility {
 
     public Effect getEffect() {
         ++numTriggered;
@@ -32,7 +32,7 @@ public class TestTrigger extends EffectTrigger {
     }
 
     public TestTrigger(EffectPredicate predicate) {
-        super(predicate);
+        super(predicate, null);
     }
 
     private int numExecuted;

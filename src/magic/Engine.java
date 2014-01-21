@@ -5,7 +5,7 @@ import magic.card.creature.Creature;
 import magic.controller.GameController;
 import magic.effect.*;
 import magic.effect.trigger.EffectReplacer;
-import magic.effect.trigger.EffectTrigger;
+import magic.effect.trigger.TriggeredAbility;
 
 import java.util.LinkedList;
 import java.util.Stack;
@@ -24,7 +24,7 @@ public class Engine {
             Effect effect = (Effect<?>)stackable;
             // See if there is a replacement for this effect
             for (EffectReplacer r : replacers) {
-                if (r.getPredicate().predicate(stackable)) {
+                if (r.getPredicate().predicate(r.getSource(), stackable, this)) {
                     Effect replacement = r.getReplacement(effect);
                     executeEffect(replacement);
                     return;
@@ -43,10 +43,9 @@ public class Engine {
 
         // Identify any triggers from this effect
         LinkedList<Effect> triggeredEffects = new LinkedList<>();
-        for (EffectTrigger trigger : triggers) {
-            if (trigger.getPredicate().predicate(stackable)) {
-                triggeredEffects.add(trigger.getEffect());
-            }
+        for (TriggeredAbility trigger : triggers) {
+            if (trigger.isTriggered(stackable, this))
+                triggeredEffects.add(trigger.getTriggeredEffect(stackable));
         }
 
         if (!triggeredEffects.isEmpty()) {
@@ -77,8 +76,12 @@ public class Engine {
         replacers.add(replacer);
     }
 
-    public void addTrigger(EffectTrigger trigger) {
+    public void addTrigger(TriggeredAbility trigger) {
         triggers.add(trigger);
+    }
+
+    public void removeTrigger(TriggeredAbility trigger) {
+        triggers.remove(trigger);
     }
 
     public Battlefield getBattlefield() {
@@ -116,6 +119,10 @@ public class Engine {
 
     public void setStep(Step step) {
         currentStep = step;
+
+        // This is so that Triggers can watch for changes in Steps
+        executeEffect(new StepChanged(step));
+
         for (GameStateObserver o : observers)
             o.stepChanged(step);
     }
@@ -263,7 +270,7 @@ public class Engine {
     private Player[] players;
     private LinkedList<GameStateObserver> observers;
     private LinkedList<EffectReplacer> replacers;
-    private LinkedList<EffectTrigger> triggers;
+    private LinkedList<TriggeredAbility> triggers;
     private Stack<Stackable> theStack;
     private Battlefield battlefield;
 }

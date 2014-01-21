@@ -2,6 +2,7 @@ package magic;
 
 import magic.card.creature.Creature;
 import magic.effect.CombatDamage;
+import magic.effect.CreatureAttacks;
 import magic.effect.TapPermanentEffect;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class Combat {
         attackers.add(c);
         blocks.put(c, new LinkedList<Creature>());
 
+        engine.executeEffect(new CreatureAttacks(c));
         engine.executeEffect(new TapPermanentEffect(c));
     }
 

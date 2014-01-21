@@ -9,6 +9,7 @@ public enum Step {
     // Beginning Phase
     UNTAP {
         public void doStep(Engine engine) {
+            // TODO does the untap occur before or after the triggers?
             engine.setStep(this);
 
             for (Permanent p : engine.getActivePlayer().getPermanentsControlled())

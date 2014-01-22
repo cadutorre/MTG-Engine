@@ -33,6 +33,7 @@ public class Engine {
         }
 
         // Execute the effect
+        System.out.println("executing: " + stackable);
         stackable.execute(this);
 
         if (stackable instanceof Effect) {

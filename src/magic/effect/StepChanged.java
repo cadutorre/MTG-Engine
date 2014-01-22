@@ -3,12 +3,7 @@ package magic.effect;
 import magic.Engine;
 import magic.Step;
 
-public class StepChanged implements Effect<Step> {
-    public final Step step;
-
-    @Override
-    public void setTarget(Step target) {
-    }
+public class StepChanged extends  Effect<Step> {
 
     @Override
     public boolean isLegallyTargeted(Engine engine) {
@@ -20,6 +15,6 @@ public class StepChanged implements Effect<Step> {
     }
 
     public StepChanged(Step s) {
-        step = s;
+        super(s);
     }
 }

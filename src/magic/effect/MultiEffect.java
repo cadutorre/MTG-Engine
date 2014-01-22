@@ -2,8 +2,9 @@ package magic.effect;
 
 import magic.Engine;
 
-public class MultiEffect<T> implements Effect<T> {
+public class MultiEffect<T> extends Effect<T> {
 
+    @Override
     public void setTarget(T target) {
         for (Effect<T> e : effects)
             e.setTarget(target);
@@ -24,6 +25,7 @@ public class MultiEffect<T> implements Effect<T> {
     }
 
     public MultiEffect(Effect<T>... effects) {
+        super();
         this.effects = effects;
     }
 

@@ -5,7 +5,7 @@ import magic.Zone;
 import magic.card.Card;
 import magic.card.Permanent;
 
-public class EnterGraveyard implements Effect<Card> {
+public class EnterGraveyard extends Effect<Card> {
 
     public Card getTarget() {
         return target;
@@ -25,21 +25,14 @@ public class EnterGraveyard implements Effect<Card> {
         target.setZone(Zone.GRAVEYARD);
     }
 
-    @Override
-    public void setTarget(Card target) {
-        this.target = target;
-        fromZone = target.getZone();
-    }
-
     public String toString() {
         return target + " enters the Graveyard from " + fromZone;
     }
 
     public EnterGraveyard(Card target) {
-        this.target = target;
+        super(target);
         fromZone = target.getZone();
     }
 
-    private Card target;
     private Zone fromZone;
 }

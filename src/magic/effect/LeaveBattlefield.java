@@ -3,19 +3,11 @@ package magic.effect;
 import magic.Engine;
 import magic.card.Permanent;
 
-public class LeaveBattlefield implements Effect<Permanent> {
+public class LeaveBattlefield extends Effect<Permanent> {
 
     public boolean isLegallyTargeted(Engine engine) {
         return true;
     }
-
-    public void setTarget(Permanent p) {
-        target = p;
-    }
-
-    public Permanent getTarget() {
-        return target;
-    };
 
     public void execute(Engine engine) {
         System.out.println(this);
@@ -28,11 +20,10 @@ public class LeaveBattlefield implements Effect<Permanent> {
     }
 
     public LeaveBattlefield(Permanent target) {
-        this.target = target;
+        super(target);
     }
 
     public LeaveBattlefield() {
+        super();
     }
-
-    private Permanent target;
 }

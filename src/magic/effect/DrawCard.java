@@ -4,7 +4,8 @@ import magic.Engine;
 import magic.Player;
 import magic.card.Card;
 
-public class DrawCard implements Effect<Player> {
+public class DrawCard extends Effect<Player> {
+    public Card[] cardsDrawn;
 
     public String toString() {
         return (target == null ? "Target Player" : target) + " draws " + (num == 1 ? "a card" : num + " cards");
@@ -12,10 +13,6 @@ public class DrawCard implements Effect<Player> {
 
     public boolean isLegallyTargeted(Engine engine) {
         return true;
-    }
-
-    public void setTarget(Player target) {
-        this.target = target;
     }
 
     public void execute(Engine engine) {
@@ -27,7 +24,7 @@ public class DrawCard implements Effect<Player> {
     }
 
     public DrawCard(Player target, int num) {
-        this.target = target;
+        super(target);
         this.num = num;
     }
 
@@ -36,6 +33,4 @@ public class DrawCard implements Effect<Player> {
     }
 
     private int num;
-    private Player target;
-    public Card[] cardsDrawn;
 }

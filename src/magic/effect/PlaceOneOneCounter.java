@@ -4,7 +4,7 @@ import magic.Engine;
 import magic.Zone;
 import magic.card.creature.Creature;
 
-public class PlaceOneOneCounter implements Effect<Creature> {
+public class PlaceOneOneCounter extends Effect<Creature> {
 
     @Override
     public void execute(Engine engine) {
@@ -14,14 +14,6 @@ public class PlaceOneOneCounter implements Effect<Creature> {
 
     public boolean isLegallyTargeted(Engine engine) {
         return target.getZone() == Zone.BATTLEFIELD;
-    }
-
-    public Creature getTarget() {
-        return target;
-    }
-
-    public void setTarget(Creature target) {
-        this.target = target;
     }
 
     public String toString() {
@@ -44,6 +36,5 @@ public class PlaceOneOneCounter implements Effect<Creature> {
         this.target = target;
     }
 
-    private Creature target;
     private int counter;
 }

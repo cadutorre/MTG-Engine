@@ -4,18 +4,10 @@ import magic.Engine;
 import magic.Zone;
 import magic.card.Permanent;
 
-public class TapPermanentEffect implements Effect<Permanent> {
+public class TapPermanentEffect extends Effect<Permanent> {
 
     public boolean isLegallyTargeted(Engine engine) {
         return target.getZone() == Zone.BATTLEFIELD;
-    }
-
-    public Permanent getTarget() {
-        return target;
-    }
-
-    public void setTarget(Permanent p) {
-        target = p;
     }
 
     public void execute(Engine engine) {
@@ -31,11 +23,9 @@ public class TapPermanentEffect implements Effect<Permanent> {
     }
 
     public TapPermanentEffect(Permanent p) {
-        target = p;
+        super(p);
     }
 
     public TapPermanentEffect() {
     }
-
-    private Permanent target;
 }

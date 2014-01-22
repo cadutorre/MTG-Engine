@@ -1,6 +1,7 @@
 package magic.card.creature;
 
 import magic.Engine;
+import magic.card.CardType;
 import magic.card.Permanent;
 import magic.card.Spell;
 import magic.effect.EnterBattlefield;
@@ -94,6 +95,7 @@ public class Creature extends Permanent implements Spell {
         currentPower = power;
         currentToughness = toughness;
         keywords = new HashSet<>();
+        addCardType(CardType.CREATURE);
     }
 
     private int currentPower;

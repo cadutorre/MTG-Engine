@@ -66,9 +66,6 @@ public class Instant extends Card implements Stackable, Spell {
             chooser.chooseTarget(effect);
     }
 
-    public void setTarget(Object target) {
-    }
-
     /**
      * An Instant can only be cast if there are legal targets for all of its Effects
      */
@@ -87,6 +84,7 @@ public class Instant extends Card implements Stackable, Spell {
     public Instant(String name, ManaCost cost, TargetedEffect<?>... effects) {
         super(name, cost, true);
         this.effects = effects;
+        addCardType(CardType.INSTANT);
     }
 
     private TargetedEffect<?>[] effects;

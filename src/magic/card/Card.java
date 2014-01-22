@@ -6,6 +6,8 @@ import magic.Stackable;
 import magic.Zone;
 import magic.mana.ManaCost;
 
+import java.util.LinkedList;
+
 public abstract class Card implements Stackable {
     public final String name;
 
@@ -43,15 +45,25 @@ public abstract class Card implements Stackable {
         return cost;
     }
 
+    public void addCardType(CardType type) {
+        cardTypes.add(type);
+    }
+
+    public boolean hasCardType(CardType type) {
+        return cardTypes.contains(type);
+    }
+
     public Card(String name, ManaCost cost, boolean instantSpeed) {
         this.name = name;
         this.cost = cost;
         this.instantSpeed = instantSpeed;
         zone = Zone.HAND;
+        cardTypes = new LinkedList<>();
     }
 
     private Player owner;
     private ManaCost cost;
     private Zone zone;
     private boolean instantSpeed;
+    private LinkedList<CardType> cardTypes;
 }

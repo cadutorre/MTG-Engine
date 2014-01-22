@@ -11,7 +11,7 @@ import magic.Engine;
  * When using this class in a suite of JUnit tests, call beginTesting() to reset the order count
  * and ensure accurate data.
  */
-public class TestEffect<T> implements Effect<T> {
+public class TestEffect<T> extends Effect<T> {
 
     private static int operationOrder = 0;
 

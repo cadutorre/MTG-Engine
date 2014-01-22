@@ -4,19 +4,11 @@ import magic.Engine;
 import magic.Zone;
 import magic.card.creature.Creature;
 
-public class DamageCreatureEffect implements Effect<Creature> {
+public class DamageCreatureEffect extends Effect<Creature> {
     public final int amount;
 
     public boolean isLegallyTargeted(Engine engine) {
         return target.getZone() == Zone.BATTLEFIELD;
-    }
-
-    public Creature getTarget() {
-        return target;
-    }
-
-    public void setTarget(Creature c) {
-        target = c;
     }
 
     public void execute(Engine engine) {
@@ -34,9 +26,7 @@ public class DamageCreatureEffect implements Effect<Creature> {
     }
 
     public DamageCreatureEffect(Creature target, int amount) {
-        this.target = target;
+        super(target);
         this.amount = amount;
     }
-
-    private Creature target;
 }

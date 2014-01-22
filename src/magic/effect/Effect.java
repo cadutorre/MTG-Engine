@@ -2,6 +2,22 @@ package magic.effect;
 
 import magic.Stackable;
 
-public interface Effect<T> extends Stackable {
-    public void setTarget(T target);
+public abstract class Effect<T> implements Stackable {
+
+    public void setTarget(T target) {
+        this.target = target;
+    }
+
+    public T getTarget() {
+        return target;
+    }
+
+    public Effect(T target) {
+        this.target = target;
+    }
+
+    public Effect() {
+    }
+
+    protected T target;
 }

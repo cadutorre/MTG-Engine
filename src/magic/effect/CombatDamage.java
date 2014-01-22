@@ -5,7 +5,7 @@ import magic.Player;
 import magic.Zone;
 import magic.card.creature.Creature;
 
-public class CombatDamage implements Effect<Object> {
+public class CombatDamage extends Effect<Object> {
     public final int amount;
 
     public boolean targetsCreature() {
@@ -16,10 +16,12 @@ public class CombatDamage implements Effect<Object> {
         return creatureTarget == null || creatureTarget.getZone() == Zone.BATTLEFIELD;
     }
 
+    @Override
     public Object getTarget() {
         return creatureTarget == null ? playerTarget : creatureTarget;
     }
 
+    @Override
     public void setTarget(Object o) {
         if (o instanceof Player)
             playerTarget = (Player)o;

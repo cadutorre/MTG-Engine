@@ -1,5 +1,6 @@
 package magic.card.creature;
 
+import magic.card.CardType;
 import magic.effect.EffectFactory;
 import magic.effect.trigger.EffectPredicate;
 import magic.effect.trigger.TriggeredAbility;
@@ -24,10 +25,15 @@ public class CreatureFactory {
         addPrototype(moroii);
 
         // Born of the Gods cards!
-        final Creature silentSentinal = new Creature("Silent Sentinal", new ManaCost(5, ManaColor.WHITE, ManaColor.WHITE), 4, 6);
+        Creature silentSentinal = new Creature("Silent Sentinal", new ManaCost(5, ManaColor.WHITE, ManaColor.WHITE), 4, 6);
         silentSentinal.addKeyword("Flying");
         // TODO this little complicated trigger here
         addPrototype(silentSentinal);
+
+        Creature fateUnraveler = new Creature("Fate Unraveler", new ManaCost(3, ManaColor.BLACK), 3, 4);
+        fateUnraveler.addCardType(CardType.ENCHANTMENT);
+        fateUnraveler.addTriggeredAbility(new TriggeredAbility(EffectPredicate.OPPONENT_DRAWS_CARD, EffectFactory.thisCardDealsDamageToThatPlayer(1)));
+        addPrototype(fateUnraveler);
     }
 
     public static Creature getCreature(String name) {

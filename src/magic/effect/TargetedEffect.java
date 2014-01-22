@@ -5,7 +5,7 @@ import magic.effect.target.Targeter;
 
 import java.util.List;
 
-public class TargetedEffect<T> implements Effect<T> {
+public class TargetedEffect<T> extends Effect<T> {
 
     public String toString() {
         return effect.toString();
@@ -16,7 +16,7 @@ public class TargetedEffect<T> implements Effect<T> {
     }
 
     public void setTarget(T target) {
-        this.target = target;
+        super.setTarget(target);
         effect.setTarget(target);
     }
 
@@ -35,5 +35,4 @@ public class TargetedEffect<T> implements Effect<T> {
 
     private Targeter<T> targeter;
     private Effect<T> effect;
-    private T target;
 }

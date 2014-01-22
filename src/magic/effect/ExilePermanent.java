@@ -4,7 +4,7 @@ import magic.Engine;
 import magic.Zone;
 import magic.card.Permanent;
 
-public class ExilePermanent implements Effect<Permanent> {
+public class ExilePermanent extends Effect<Permanent> {
 
     public void execute(Engine engine) {
         System.out.println(this);
@@ -16,10 +16,6 @@ public class ExilePermanent implements Effect<Permanent> {
 
     public boolean isLegallyTargeted(Engine engine) {
         return target.getZone() == Zone.BATTLEFIELD;
-    }
-
-    public void setTarget(Permanent creature) {
-        target = creature;
     }
 
     public String toString() {

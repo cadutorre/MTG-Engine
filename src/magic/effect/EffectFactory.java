@@ -21,5 +21,13 @@ public abstract class EffectFactory {
         };
     }
 
+    public static EffectFactory thisCardDealsDamageToThatPlayer(final int amount) {
+        return new EffectFactory() {
+            public Effect<Player> getEffect(Card source, Stackable triggeringStackable) {
+                return new LoseLifeEffect(((Effect<Player>)triggeringStackable).getTarget(), amount); // TODO change this to damage, not life loss
+            }
+        };
+    }
+
     public abstract Effect<?> getEffect(Card source, Stackable triggeringStackable);
 }

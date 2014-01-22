@@ -3,6 +3,8 @@ package magic.controller;
 import magic.Combat;
 import magic.Player;
 import magic.Stackable;
+import magic.effect.Effect;
+import magic.effect.TargetedEffect;
 
 public interface PlayerController {
 
@@ -17,4 +19,8 @@ public interface PlayerController {
     public void declareAttackers(Player p, Combat c);
 
     public void declareBlockers(Player p, Combat c);
+
+    public <T> void chooseTarget(TargetedEffect<T> effect);
+
+    public boolean promptOptionalEffect(Effect<?> effect);
 }

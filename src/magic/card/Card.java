@@ -37,6 +37,19 @@ public abstract class Card implements Stackable {
         return owner;
     }
 
+    /**
+     * TODO I just learned that the controller is whoever casts the card.
+     * The controller should be kept consistent with this fact
+     */
+    public void setController(Player player) {
+        controller = player;
+    }
+
+    public Player getController() {
+        return controller;
+    }
+
+
     public boolean canCast(Engine engine) {
         return true;
     }
@@ -62,6 +75,7 @@ public abstract class Card implements Stackable {
     }
 
     private Player owner;
+    private Player controller;
     private ManaCost cost;
     private Zone zone;
     private boolean instantSpeed;

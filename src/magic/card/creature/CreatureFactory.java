@@ -27,7 +27,8 @@ public class CreatureFactory {
         // Born of the Gods cards!
         Creature silentSentinal = new Creature("Silent Sentinal", new ManaCost(5, ManaColor.WHITE, ManaColor.WHITE), 4, 6);
         silentSentinal.addKeyword("Flying");
-        // TODO this little complicated trigger here
+        silentSentinal.addKeyword("Haste");
+        silentSentinal.addTriggeredAbility(new TriggeredAbility(EffectPredicate.THIS_CREATURE_ATTACKS, EffectFactory.MAY_RETURN_ENCHANTMENT));
         addPrototype(silentSentinal);
 
         Creature fateUnraveler = new Creature("Fate Unraveler", new ManaCost(3, ManaColor.BLACK), 3, 4);

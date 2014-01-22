@@ -6,6 +6,7 @@ public class MultiEffect<T> extends Effect<T> {
 
     @Override
     public void setTarget(T target) {
+        super.setTarget(target);
         for (Effect<T> e : effects)
             e.setTarget(target);
     }

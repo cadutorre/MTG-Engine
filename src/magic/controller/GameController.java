@@ -6,7 +6,8 @@ import magic.Player;
 import magic.Stackable;
 import magic.card.Deck;
 import magic.card.Library;
-import magic.effect.target.TargetChooser;
+import magic.effect.Effect;
+import magic.effect.TargetedEffect;
 import magic.view.GameUI;
 
 import java.util.HashMap;
@@ -45,6 +46,19 @@ public class GameController {
 
     public void declareBlockers(Player p) {
         playerControllers.get(p).declareBlockers(p, engine.getCombat());
+    }
+
+    /**
+     * Usually a player chooses the targets of an effect before it ever goes on the stack,
+     * but sometimes there are triggered events that require targets to be chosen.
+     *
+     */
+    public void chooseTargets(Player p, TargetedEffect<?> effect) {
+        playerControllers.get(p).chooseTarget(effect);
+    }
+
+    public boolean promptOptionalEffect(Player p, Effect<?> effect) {
+        return playerControllers.get(p).promptOptionalEffect(effect);
     }
 
     public GameController(Engine engine, GameUI ui) {

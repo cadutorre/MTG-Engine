@@ -4,6 +4,7 @@ import magic.Player;
 import magic.Stackable;
 import magic.card.Card;
 import magic.card.Permanent;
+import magic.effect.target.CreatureOnBattlefield;
 
 /**
  * Creates an Effect in the context of a Triggered Ability.
@@ -13,6 +14,13 @@ import magic.card.Permanent;
  *
  */
 public abstract class EffectFactory {
+
+    public static EffectFactory MAY_RETURN_ENCHANTMENT = new EffectFactory() {
+        public Effect<?> getEffect(Card source, Stackable triggeringStackable) {
+            return new OptionalTargetedEffect<>(source, new TargetedEffect<>(new CreatureOnBattlefield(), new DamageCreatureEffect(3))); // TODO return enchangement, not burn
+        }
+    };
+
     public static EffectFactory youLoseLife(final int amount) {
         return new EffectFactory() {
             public Effect<Player> getEffect(Card source, Stackable triggeringStackable) {

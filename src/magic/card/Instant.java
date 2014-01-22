@@ -4,9 +4,9 @@ import magic.Engine;
 import magic.Player;
 import magic.Stackable;
 import magic.card.creature.Creature;
+import magic.controller.PlayerController;
 import magic.effect.*;
 import magic.effect.target.CreatureOnBattlefield;
-import magic.effect.target.TargetChooser;
 import magic.mana.ManaColor;
 import magic.mana.ManaCost;
 
@@ -61,9 +61,9 @@ public class Instant extends Card implements Stackable, Spell {
         // TODO send this card to the Graveyard
     }
 
-    public void chooseTargets(TargetChooser chooser) {
+    public void chooseTargets(PlayerController controller) {
         for (TargetedEffect<?> effect : effects)
-            chooser.chooseTarget(effect);
+            controller.chooseTarget(effect);
     }
 
     /**

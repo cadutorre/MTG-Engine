@@ -23,11 +23,9 @@ public class ExilePermanent extends Effect<Permanent> {
     }
 
     public ExilePermanent(Permanent target) {
-        this.target = target;
+        super(target);
     }
 
     public ExilePermanent() {
     }
-
-    private Permanent target;
 }

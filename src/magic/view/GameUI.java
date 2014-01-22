@@ -4,11 +4,9 @@ import magic.*;
 import magic.card.Card;
 import magic.card.Instant;
 import magic.card.Permanent;
-import magic.card.Spell;
 import magic.card.creature.Creature;
 import magic.controller.PlayerController;
 import magic.effect.*;
-import magic.effect.target.TargetChooser;
 import sun.awt.OrientableFlowLayout;
 
 import javax.swing.*;
@@ -17,7 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GameUI extends JFrame implements TargetChooser, GameStateObserver, PlayerController {
+public class GameUI extends JFrame implements GameStateObserver, PlayerController {
 
     @Override
     public void effectExecuted(Effect<?> effect) {
@@ -94,6 +92,11 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         T target = (T)JOptionPane.showInputDialog(this, effect.toString(), "Choose a target", JOptionPane.QUESTION_MESSAGE, null, targets, null);
 
         effect.setTarget(target);
+    }
+
+    @Override
+    public boolean promptOptionalEffect(Effect<?> effect) {
+        return JOptionPane.showConfirmDialog(this, "Would you like to: " + effect.toString() + "?") == JOptionPane.OK_OPTION;
     }
 
     @Override

@@ -22,14 +22,6 @@ public abstract class Permanent extends Card {
         tapped = false;
     }
 
-    public void setController(Player player) {
-        controller = player;
-    }
-
-    public Player getController() {
-        return controller;
-    }
-
     /**
      * This Permanent must add its Triggered Abilities to the Engine
      * It must remove them when it leaves the Battlefield
@@ -65,7 +57,6 @@ public abstract class Permanent extends Card {
         triggeredAbilities = new LinkedList<>();
     }
 
-    private Player controller;
     private boolean tapped;
     private LinkedList<TriggeredAbility> triggeredAbilities;
 }

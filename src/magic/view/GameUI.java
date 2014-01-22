@@ -9,6 +9,7 @@ import magic.card.creature.Creature;
 import magic.controller.PlayerController;
 import magic.effect.*;
 import magic.effect.target.TargetChooser;
+import sun.awt.OrientableFlowLayout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -142,9 +143,8 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
     }
 
     public Stackable offerPriority(Player player, boolean canPlaySorcery) {
-        // Prompt the player to play a legal card, or pass priority
-
-        List<Object> legalCardList = new LinkedList<>();
+        System.out.println(player + " gets priority - " + canPlaySorcery);
+        List<Card> legalCardList = new LinkedList<>();
         for (Card c : player.getHand()) {
             if (c.canCast(engine) && (c.isInstantSpeed() || canPlaySorcery))
                  legalCardList.add(c);
@@ -153,14 +153,31 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         if (legalCardList.isEmpty())
             return null;
 
-        Object[] legalCards = legalCardList.toArray();
-        String prompt = canPlaySorcery ? "Choose a Spell to Cast" : "Choose an Instant-Speed Spell to Cast";
-        Spell spell = (Spell)JOptionPane.showInputDialog(this, prompt, player + " has Priority", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
+        //Object[] legalCards = legalCardList.toArray();
+        //String prompt = canPlaySorcery ? "Choose a Spell to Cast" : "Choose an Instant-Speed Spell to Cast";
+        //cardClicked = (Card)JOptionPane.showInputDialog(this, prompt, player + " has Priority", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
 
-        if (spell != null && spell instanceof Instant)
-            chooseTargets((Instant)spell);
+        priority.gainPriority(player, canPlaySorcery);
 
-        return spell;
+        if (canPlaySorcery)
+            waitForCard(legalCardList);
+        else
+            waitForCard(legalCardList, 3);
+
+        if (cardClicked != null && cardClicked instanceof Instant)
+            chooseTargets((Instant) cardClicked);
+
+        priority.losePriority();
+
+        return cardClicked;
+    }
+
+    protected void cardClicked(Card c) {
+        cardClicked = c;
+    }
+
+    protected void pass() {
+        passed = true;
     }
 
     public GameUI(Engine engine) {
@@ -183,18 +200,25 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         hands = new HashMap<>();
 
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(stack, BorderLayout.WEST);
+
+        // Left side panel, with stack and priority
+        JPanel left = new JPanel();
+        left.setLayout(new OrientableFlowLayout(OrientableFlowLayout.VERTICAL));
+        left.add(stack);
+        priority = new PriorityIndicator(this);
+        left.add(priority);
+        getContentPane().add(left, BorderLayout.WEST);
 
         JPanel center = new JPanel();
         center.setLayout(new FlowLayout());
         getContentPane().add(center, BorderLayout.CENTER);
         for (Player p : engine.getPlayers()) {
-            CardList hand = new CardList(p + "'s Hand");
+            CardList hand = new CardList(p + "'s Hand", this);
             hand.setPreferredSize(new Dimension(750, CardView.HEIGHT + 70));
             center.add(hand);
             hands.put(p, hand);
 
-            CardList creatures = new CardList(p + "'s Creatures");
+            CardList creatures = new CardList(p + "'s Creatures", this);
             creatures.setPreferredSize(new Dimension(750, CardView.HEIGHT + 70));
             center.add(creatures);
             battlefields.put(p, creatures);
@@ -211,6 +235,53 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         setVisible(true);
     }
 
+    private Card waitForCard(List<Card> options, int seconds) {
+        cardClicked = null;
+        passed = false;
+        int increment = 500;
+        int count = seconds*1000/increment;
+        for (int i = 0; i<count; ++i) {
+            try {
+                Thread.sleep(increment);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (passed == true) {
+                cardClicked = null;
+                return null;
+            }
+            if (cardClicked != null) {
+                if (!options.contains(cardClicked))
+                    cardClicked = null;
+                else
+                    return cardClicked;
+            }
+        }
+        return null;
+    }
+
+    private Card waitForCard(List<Card> options) {
+        cardClicked = null;
+        passed = false;
+        while(true) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (passed == true) {
+                cardClicked = null;
+                return null;
+            }
+            if (cardClicked != null) {
+                if (!options.contains(cardClicked))
+                    cardClicked = null;
+                else
+                    return cardClicked;
+            }
+        }
+    }
+
     private void chooseTargets(Instant instant) {
         instant.chooseTargets(this);
     }
@@ -220,5 +291,10 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
     private HashMap<Card, CardView> cardViews;
     private HashMap<Player, CardList> hands;
     private TurnStatusView status;
+    private PriorityIndicator priority;
+
+    private Card cardClicked;
+    private boolean passed;
+
     private Engine engine;
 }

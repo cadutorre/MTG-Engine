@@ -21,11 +21,14 @@ public class StackView extends JPanel {
 
     public StackView(Engine engine) {
         this.engine = engine;
+
         stack = new DefaultListModel<>();
         setBorder(new TitledBorder("The Stack"));
         JList<Stackable> stackList = new JList<>(stack);
         JScrollPane scroller = new JScrollPane(stackList);
         add(scroller);
+
+        scroller.setPreferredSize(new Dimension(200, 200));
     }
 
     private class StackableRenderer implements ListCellRenderer<Stackable> {

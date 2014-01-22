@@ -4,6 +4,8 @@ import magic.card.Card;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
 public class CardList extends JPanel {
@@ -34,7 +36,8 @@ public class CardList extends JPanel {
         super.setSize(width, height);
     }
 
-    public CardList(String name) {
+    public CardList(String name, final GameUI ui) {
+        this.ui = ui;
         setBorder(new TitledBorder(name));
 
         cardModel = new CardListModel();
@@ -43,6 +46,13 @@ public class CardList extends JPanel {
         cards.setCellRenderer(new CardRenderer());
         cards.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         cards.setVisibleRowCount(1);
+
+        cards.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                if (cards.getSelectedValue() != null)
+                    ui.cardClicked(cards.getSelectedValue().card);
+            }
+        });
 
         cardScroller = new JScrollPane(cards);
         cardScroller.setPreferredSize(new Dimension(700, CardView.HEIGHT + 24));
@@ -69,6 +79,7 @@ public class CardList extends JPanel {
         }
     }
 
+    private GameUI ui;
     private CardListModel cardModel;
     private JList<CardView> cards;
     private JScrollPane cardScroller;

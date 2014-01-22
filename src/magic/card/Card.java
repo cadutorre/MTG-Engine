@@ -2,10 +2,11 @@ package magic.card;
 
 import magic.Engine;
 import magic.Player;
+import magic.Stackable;
 import magic.Zone;
 import magic.mana.ManaCost;
 
-public abstract class Card {
+public abstract class Card implements Stackable {
     public final String name;
 
     public abstract Card clone();

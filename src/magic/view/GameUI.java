@@ -70,12 +70,6 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
     @Override
     public void phaseChanged(Phase phase) {
         status.setPhase(phase);
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -153,12 +147,9 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         if (legalCardList.isEmpty())
             return null;
 
-        //Object[] legalCards = legalCardList.toArray();
-        //String prompt = canPlaySorcery ? "Choose a Spell to Cast" : "Choose an Instant-Speed Spell to Cast";
-        //cardClicked = (Card)JOptionPane.showInputDialog(this, prompt, player + " has Priority", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
-
         priority.gainPriority(player, canPlaySorcery);
 
+        // TODO to move the game along faster, use the three-second timer any time they have no Sorceries in hand
         if (canPlaySorcery)
             waitForCard(legalCardList);
         else
@@ -235,12 +226,22 @@ public class GameUI extends JFrame implements TargetChooser, GameStateObserver, 
         setVisible(true);
     }
 
+    /**
+     * This is the fall-back in case the threading is too hard for me to handle.
+     */
+    private Card modalForCard(List<Card> legalCardList) {
+        Object[] legalCards = legalCardList.toArray();
+        String prompt = "Choose a Spell to Cast";
+        return (Card)JOptionPane.showInputDialog(this, prompt, "Play a Spell", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
+    }
+
     private Card waitForCard(List<Card> options, int seconds) {
         cardClicked = null;
         passed = false;
         int increment = 500;
         int count = seconds*1000/increment;
         for (int i = 0; i<count; ++i) {
+            priority.displayCountdown(seconds-(i*increment/1000));
             try {
                 Thread.sleep(increment);
             } catch (InterruptedException e) {

@@ -10,6 +10,10 @@ import java.awt.event.ActionListener;
 
 public class PriorityIndicator extends JPanel {
 
+    public void displayCountdown(int seconds) {
+        timer.setText(seconds + "s");
+    }
+
     public void gainPriority(Player p, boolean sorcery) {
         hasPriority.setEnabled(true);
         cancel.setEnabled(true);
@@ -19,6 +23,7 @@ public class PriorityIndicator extends JPanel {
     public void losePriority() {
         hasPriority.setEnabled(false);
         cancel.setEnabled(false);
+        timer.setText("");
     }
 
     public PriorityIndicator(final GameUI ui) {
@@ -27,6 +32,8 @@ public class PriorityIndicator extends JPanel {
 
         hasPriority = new JLabel();
         cancel = new JButton("Pass");
+        timer = new JLabel("");
+
         hasPriority.setEnabled(false);
         cancel.setEnabled(false);
         cancel.addActionListener(new ActionListener() {
@@ -36,6 +43,7 @@ public class PriorityIndicator extends JPanel {
         });
 
         add(hasPriority);
+        add(timer);
         add(cancel);
 
         setPreferredSize(new Dimension(200, 100));
@@ -43,5 +51,6 @@ public class PriorityIndicator extends JPanel {
 
     private JLabel hasPriority;
     private JButton cancel;
+    private JLabel timer;
     private GameUI ui;
 }

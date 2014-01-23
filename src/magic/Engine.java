@@ -21,6 +21,10 @@ public class Engine {
      *
      */
     public void executeEffect(Stackable stackable) {
+        // "603.2f An ability triggers only if its trigger event actually occurs. An event that’s prevented or replaced won’t trigger anything."
+        if (!stackable.isLegallyTargeted(this))
+            return;
+
         if (stackable instanceof Effect) {
             Effect effect = (Effect<?>)stackable;
             // See if there is a replacement for this effect
@@ -188,6 +192,12 @@ public class Engine {
                 priorityPlayer = playerAfter(priorityPlayer);
             }
 
+            // TODO "603.3b If multiple abilities have triggered since the last time a player received priority,
+            // each player, in APNAP order, puts triggered abilities he or she controls on the stack in any order he or she chooses.
+            // (See rule 101.4.) Then the game once again checks for and resolves state-based actions until none are performed,
+            // then abilities that triggered during this process go on the stack. This process repeats until no new state-based actions are performed and no abilities trigger.
+            // Then the appropriate player gets priority."
+
             if (!theStack.isEmpty()) {
                 popTheStack();
                 numPasses = 0;
@@ -252,18 +262,10 @@ public class Engine {
     }
 
     private void popTheStack() {
-        Stackable top = theStack.pop();
-
         for (GameStateObserver o : observers)
             o.stackChanged();
 
-        // TODO - if a spell or ability cannot resolve because it is illegally targeted, is it still replaced by replacement effects?
-
-        if (top.isLegallyTargeted(this)) {
-            executeEffect(top);
-        } else {
-            System.out.println("Not resolving: " + top);
-        }
+        executeEffect(theStack.pop());
     }
 
     private GameController controller;

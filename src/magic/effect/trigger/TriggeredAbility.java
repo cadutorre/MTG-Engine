@@ -13,6 +13,8 @@ public class TriggeredAbility {
     }
 
     public Effect getTriggeredEffect(Stackable stackable) {
+        // "603.3a A triggered ability is controlled by the player who controlled its source at the time it triggered,
+        // unless it's a delayed triggered ability. To determine the controller of a delayed triggered ability, see rules 603.7d–f."
         return factory.getEffect(owner, stackable);
     }
 

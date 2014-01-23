@@ -1,6 +1,5 @@
 package magic.controller;
 
-
 import magic.Engine;
 import magic.Player;
 import magic.Stackable;

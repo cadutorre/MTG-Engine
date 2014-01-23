@@ -8,6 +8,7 @@ import magic.effect.trigger.EffectReplacer;
 import magic.effect.trigger.TriggeredAbility;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 public class Engine {
@@ -207,13 +208,16 @@ public class Engine {
     }
 
     private void stateBasedActions() {
-         for (Creature c : battlefield.getCreatures()) {
-             if (c.getCurrentToughness() <= 0) {
+        LinkedList<Effect<?>> stateEffects = new LinkedList<Effect<?>>();
+        for (Creature c : battlefield.getCreatures()) {
+            if (c.getCurrentToughness() <= 0) {
                  // kill the creature
-                 executeEffect(new LeaveBattlefield(c));
-                 executeEffect(new EnterGraveyard(c));
-             }
-         }
+                 stateEffects.add(new LeaveBattlefield(c));
+                 stateEffects.add(new EnterGraveyard(c));
+            }
+        }
+        for (Effect<?> e : stateEffects)
+            executeEffect(e);
     }
 
     /**

@@ -106,11 +106,11 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
             if (legalAttackers.isEmpty())
                 return;
 
-            Object[] legalAttackerArray = legalAttackers.toArray();
-            Creature attacker = (Creature)JOptionPane.showInputDialog(this, "Choose a Creature", "Declare Attackers", JOptionPane.QUESTION_MESSAGE, null, legalAttackerArray, null);
-            if (attacker == null)
+            waitForCard(legalAttackers);
+
+            if (cardClicked == null)
                 return;
-            combat.addAttacker(attacker);
+            combat.addAttacker((Creature)cardClicked);
         }
     }
 
@@ -126,15 +126,15 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
             if (legalBlockers.isEmpty())
                 return;
 
-            Object[] legalBlocksArray = legalBlockers.toArray();
-            Creature blocker = (Creature)JOptionPane.showInputDialog(this, "Choose a Creature", "Declare Blockers", JOptionPane.QUESTION_MESSAGE, null, legalBlocksArray, null);
-            if (blocker == null)
+            waitForCard(legalBlockers);
+
+            if (cardClicked == null)
                 return;
 
             Object[] attackers = combat.getAttackers().toArray();
             Creature attacker = (Creature)JOptionPane.showInputDialog(this, "Choose an Attacking Creature to Block", "Declare Blockers", JOptionPane.QUESTION_MESSAGE, null, attackers, null);
 
-            combat.addBlocker(blocker, attacker);
+            combat.addBlocker((Creature)cardClicked, attacker);
         }
     }
 
@@ -244,7 +244,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         return (Card)JOptionPane.showInputDialog(this, prompt, "Play a Spell", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
     }
 
-    private void highlightOptions(List<Card> options) {
+    private void highlightOptions(List<? extends Card> options) {
         for (CardView v : cardViews.values())
             v.setEnabled(false);
 
@@ -284,7 +284,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         return null;
     }
 
-    private Card waitForCard(List<Card> options) {
+    private Card waitForCard(List<? extends Card> options) {
         highlightOptions(options);
         cardClicked = null;
         passed = false;

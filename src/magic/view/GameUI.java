@@ -21,13 +21,12 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
     public void effectExecuted(Effect<?> effect) {
         if (effect instanceof EnterBattlefield) {
             EnterBattlefield enter = (EnterBattlefield)effect;
-            CardView cardView = CardView.create(enter.getTarget());
-            cardViews.put(enter.getTarget(), cardView);
+            CardView cardView = getCardView(enter.getTarget());
             battlefields.get(enter.getTarget().getController()).addCard(cardView);
         } else if (effect instanceof DrawCard) {
             DrawCard draw = (DrawCard)effect;
             for (Card c : draw.getCardsDrawn()) {
-                CardView cardView = CardView.create(c);
+                CardView cardView = getCardView(c);
                 hands.get(c.getOwner()).addCard(cardView);
             }
         } else if (effect instanceof DamageCreatureEffect) {
@@ -178,13 +177,13 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         this.engine = engine;
@@ -229,6 +228,13 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         setVisible(true);
     }
 
+    private CardView getCardView(Card c) {
+        if (!cardViews.containsKey(c))
+            cardViews.put(c, CardView.create(c));
+
+        return cardViews.get(c);
+    }
+
     /**
      * This is the fall-back in case the threading is too hard for me to handle.
      */
@@ -238,7 +244,21 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         return (Card)JOptionPane.showInputDialog(this, prompt, "Play a Spell", JOptionPane.QUESTION_MESSAGE, null, legalCards, null);
     }
 
+    private void highlightOptions(List<Card> options) {
+        for (CardView v : cardViews.values())
+            v.setEnabled(false);
+
+        for (Card c : options)
+            cardViews.get(c).setEnabled(true);
+
+        for (CardList l : battlefields.values())
+            l.updateCards();
+        for (CardList l : hands.values())
+            l.updateCards();
+    }
+
     private Card waitForCard(List<Card> options, int seconds) {
+        highlightOptions(options);
         cardClicked = null;
         passed = false;
         int increment = 500;
@@ -265,6 +285,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
     }
 
     private Card waitForCard(List<Card> options) {
+        highlightOptions(options);
         cardClicked = null;
         passed = false;
         while(true) {

@@ -10,6 +10,10 @@ import java.awt.*;
 
 public class CardList extends JPanel {
 
+    public void updateCards() {
+        cardModel.updateCards();
+    }
+
     public void updateCard(Card c) {
         cardModel.updateCard(c);
     }
@@ -76,6 +80,9 @@ public class CardList extends JPanel {
                     return;
                 }
             }
+        }
+        void updateCards() {
+            fireContentsChanged(CardList.this, 0, size()-1);
         }
     }
 

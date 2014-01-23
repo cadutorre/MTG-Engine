@@ -262,10 +262,12 @@ public class Engine {
     }
 
     private void popTheStack() {
+        Stackable top = theStack.pop();
+
         for (GameStateObserver o : observers)
             o.stackChanged();
 
-        executeEffect(theStack.pop());
+        executeEffect(top);
     }
 
     private GameController controller;

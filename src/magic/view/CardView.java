@@ -36,6 +36,10 @@ public class CardView extends JComponent {
             setPreferredSize(new Dimension(WIDTH, HEIGHT));
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public void paint(Graphics g) {
         if (rotate) {
@@ -105,6 +109,11 @@ public class CardView extends JComponent {
         }
 
         drawContent(g);
+
+        if (!enabled) {
+            g.setColor(new Color(0, 0, 0, 50));
+            g.fillRect(0, 0, WIDTH, HEIGHT);
+        }
     }
 
     protected void drawContent(Graphics g) {
@@ -123,4 +132,5 @@ public class CardView extends JComponent {
     protected int inset;
 
     private boolean rotate;
+    private boolean enabled;
 }

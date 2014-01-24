@@ -6,6 +6,10 @@ import magic.card.Permanent;
 
 public class TapPermanentEffect extends Effect<Permanent> {
 
+    public String toPresentTense() {
+        return target + " Taps";
+    }
+
     public boolean isLegallyTargeted(Engine engine) {
         return target.getZone() == Zone.BATTLEFIELD;
     }

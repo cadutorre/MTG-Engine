@@ -7,6 +7,11 @@ import magic.card.Permanent;
 
 public class EnterGraveyard extends Effect<Card> {
 
+    @Override
+    public String toPresentTense() {
+        return target + " Enters the Graveyard";
+    }
+
     public Card getTarget() {
         return target;
     }

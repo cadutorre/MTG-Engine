@@ -7,6 +7,11 @@ import magic.card.creature.Creature;
 public class DamageCreatureEffect extends Effect<Creature> {
     public final int amount;
 
+    @Override
+    public String toPresentTense() {
+        return target + " is Dealt " + amount + " Damage";
+    }
+
     public boolean isLegallyTargeted(Engine engine) {
         return target.getZone() == Zone.BATTLEFIELD;
     }
@@ -22,11 +27,6 @@ public class DamageCreatureEffect extends Effect<Creature> {
     }
 
     public DamageCreatureEffect(int amount) {
-        this.amount = amount;
-    }
-
-    public DamageCreatureEffect(Creature target, int amount) {
-        super(target);
         this.amount = amount;
     }
 }

@@ -5,6 +5,11 @@ import magic.card.Permanent;
 
 public class LeaveBattlefield extends Effect<Permanent> {
 
+    @Override
+    public String toPresentTense() {
+        return target + " Leaves the Battlefield";
+    }
+
     public boolean isLegallyTargeted(Engine engine) {
         return true;
     }

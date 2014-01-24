@@ -5,6 +5,10 @@ import magic.card.Card;
 
 public class OptionalTargetedEffect<T> extends Effect<T> {
 
+    public String toPresentTense() {
+        return source.getController() + " may: " + effect.toString();
+    }
+
     public String toString() {
         return "Optional: " + effect;
     }
@@ -17,6 +21,7 @@ public class OptionalTargetedEffect<T> extends Effect<T> {
 
     @Override
     public void execute(Engine engine) {
+        // TODO this is not correct...the controller of this effect is whoever controlled the source at the time of activation, not resolution
         if (engine.getController().promptOptionalEffect(source.getController(), effect)) {
             engine.getController().chooseTargets(source.getController(), effect);
             engine.executeEffect(effect);

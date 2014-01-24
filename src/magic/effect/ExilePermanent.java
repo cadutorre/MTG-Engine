@@ -6,6 +6,11 @@ import magic.card.Permanent;
 
 public class ExilePermanent extends Effect<Permanent> {
 
+    @Override
+    public String toPresentTense() {
+        return target + " is Exiled";
+    }
+
     public void execute(Engine engine) {
         System.out.println(this);
 

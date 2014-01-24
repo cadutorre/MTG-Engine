@@ -62,18 +62,18 @@ public class Combat {
                 for (Creature blocker : blocks.get(attacker)) {
                     if (damageLeft > 0) {
                         if (blocker == blocks.get(attacker).getLast()) {
-                            engine.executeEffect(new CombatDamage(blocker, damageLeft));
+                            engine.executeEffect(new CombatDamage(attacker, blocker, damageLeft));
                         } else {
                             int toughness = blocker.getCurrentToughness();
-                            engine.executeEffect(new CombatDamage(blocker, Math.min(toughness, damageLeft)));
+                            engine.executeEffect(new CombatDamage(attacker, blocker, Math.min(toughness, damageLeft)));
                             damageLeft -= toughness;
                         }
                     }
-                    engine.executeEffect(new CombatDamage(attacker, blocker.getCurrentPower()));
+                    engine.executeEffect(new CombatDamage(blocker, attacker, blocker.getCurrentPower()));
                 }
             } else {
                 // No blockers, deal damage to defending Player
-                engine.executeEffect(new CombatDamage(defender, attacker.getCurrentPower()));
+                engine.executeEffect(new CombatDamage(attacker, defender, attacker.getCurrentPower()));
             }
         }
     }

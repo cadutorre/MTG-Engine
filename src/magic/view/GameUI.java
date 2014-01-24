@@ -19,6 +19,8 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
 
     @Override
     public void effectExecuted(Effect<?> effect) {
+        boolean logEffect = true;
+
         if (effect instanceof EnterBattlefield) {
             EnterBattlefield enter = (EnterBattlefield)effect;
             CardView cardView = getCardView(enter.getTarget());
@@ -56,7 +58,15 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
             CardView view = cardViews.get(target);
             view.setTapped(false);
             battlefields.get(target.getController()).updateCard(target);
+        } else if (effect instanceof TargetedEffect) {
+            // TargetedEffect is sort of a wrapper and would just be noisy in the log
+            logEffect = false;
+        } else if (effect instanceof StepChanged) {
+            logEffect = false;
         }
+
+        if (logEffect)
+            log.addEffect(effect);
     }
 
     @Override
@@ -207,6 +217,8 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         left.add(stack);
         priority = new PriorityIndicator(this);
         left.add(priority);
+        log = new EventLog();
+        left.add(log);
         getContentPane().add(left, BorderLayout.WEST);
 
         JPanel center = new JPanel();
@@ -324,6 +336,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
     private HashMap<Player, CardList> hands;
     private TurnStatusView status;
     private PriorityIndicator priority;
+    private EventLog log;
 
     private Card cardClicked;
     private boolean cancelled;

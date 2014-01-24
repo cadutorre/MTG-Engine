@@ -7,6 +7,11 @@ import magic.card.Card;
 public class DrawCard extends Effect<Player> {
     public Card[] cardsDrawn;
 
+    @Override
+    public String toPresentTense() {
+        return target + " Draws " + (num == 1 ? " a Card" : num + " Cards");
+    }
+
     public String toString() {
         return (target == null ? "Target Player" : target) + " draws " + (num == 1 ? "a card" : num + " cards");
     }
@@ -25,10 +30,6 @@ public class DrawCard extends Effect<Player> {
 
     public DrawCard(Player target, int num) {
         super(target);
-        this.num = num;
-    }
-
-    public DrawCard(int num) {
         this.num = num;
     }
 

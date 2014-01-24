@@ -9,6 +9,10 @@ import magic.Player;
 public class LoseLifeEffect extends Effect<Player> {
     public final int amount;
 
+    public String toPresentTense() {
+        return target + " Loses " + amount + " Life";
+    }
+
     public boolean isLegallyTargeted(Engine engine) {
         return true;
     }

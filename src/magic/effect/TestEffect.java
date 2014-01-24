@@ -15,6 +15,10 @@ public class TestEffect<T> extends Effect<T> {
 
     private static int operationOrder = 0;
 
+    public String toPresentTense() {
+        return "";
+    }
+
     public static void beginTesting() {
         operationOrder = 0;
     }

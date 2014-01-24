@@ -6,8 +6,13 @@ import magic.card.creature.Creature;
 
 public class EnterBattlefield extends Effect<Permanent> {
 
+    @Override
+    public String toPresentTense() {
+        return target + " Enters the Battlefield";
+    }
+
     public String toString() {
-        return target + " enters the Battlefield under its owner's control";
+        return target.name + " enters the Battlefield under " + target.getController() + "'s control";
     }
 
     public void execute(Engine engine) {

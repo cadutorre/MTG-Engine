@@ -5,6 +5,10 @@ import magic.Step;
 
 public class StepChanged extends  Effect<Step> {
 
+    public String toPresentTense() {
+        return target == null ? "" : target.toString();
+    }
+
     @Override
     public boolean isLegallyTargeted(Engine engine) {
         return true;

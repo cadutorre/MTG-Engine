@@ -8,6 +8,11 @@ import magic.card.creature.Creature;
 public class CombatDamage extends Effect<Object> {
     public final int amount;
 
+    @Override
+    public String toPresentTense() {
+        return source + " Deals " + amount + " Combat Damage to " + getTarget();
+    }
+
     public boolean targetsCreature() {
         return playerTarget == null;
     }
@@ -42,20 +47,19 @@ public class CombatDamage extends Effect<Object> {
         return amount + " Combat Damage to " + (creatureTarget == null ? playerTarget : creatureTarget);
     }
 
-    public CombatDamage(int amount) {
-        this.amount = amount;
-    }
-
-    public CombatDamage(Creature target, int amount) {
+    public CombatDamage(Creature source, Creature target, int amount) {
+        this.source = source;
         creatureTarget = target;
         this.amount = amount;
     }
 
-    public CombatDamage(Player target, int amount) {
+    public CombatDamage(Creature source, Player target, int amount) {
+        this.source = source;
         playerTarget = target;
         this.amount = amount;
     }
 
+    private Creature source;
     private Creature creatureTarget;
     private Player playerTarget;
 }

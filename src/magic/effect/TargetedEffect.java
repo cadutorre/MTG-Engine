@@ -7,6 +7,10 @@ import java.util.List;
 
 public class TargetedEffect<T> extends Effect<T> {
 
+    public String toPresentTense() {
+        return effect.toPresentTense();
+    }
+
     public String toString() {
         return effect.toString();
     }
@@ -28,11 +32,18 @@ public class TargetedEffect<T> extends Effect<T> {
         engine.executeEffect(effect);
     }
 
-    public TargetedEffect(Targeter<T> targeter, Effect<T> effect) {
+    /**
+     * Using "? super T" because the Effect can be more general than the target.
+     *
+     * For example, the Targeter might specify creatures on the battlefield, or creatures controlled
+     * by a certain player, while the effect is ExilePermanent - anything that can be done
+     * to a creature can be done to a permanent, hence the contravariance.
+     */
+    public TargetedEffect(Targeter<T> targeter, Effect<? super T> effect) {
         this.targeter = targeter;
         this.effect = effect;
     }
 
     private Targeter<T> targeter;
-    private Effect<T> effect;
+    private Effect<? super T> effect;
 }

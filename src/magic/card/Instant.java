@@ -12,13 +12,6 @@ import magic.mana.ManaCost;
 
 public class Instant extends Card implements Stackable, Spell {
 
-    public static Instant getLightningBolt(Player owner) {
-        Instant bolt = getLightningBolt();
-        bolt.setOwner(owner);
-
-        return bolt;
-    }
-
     public static Instant getLightningBolt() {
         TargetedEffect<Creature> boltEffect = new TargetedEffect<>(new CreatureOnBattlefield(), new DamageCreatureEffect(3));
         Instant bolt = new Instant("Lightning Bolt", new ManaCost(ManaColor.RED), boltEffect);
@@ -26,16 +19,8 @@ public class Instant extends Card implements Stackable, Spell {
         return bolt;
     }
 
-    public static Instant getUnmake(Player owner) {
-        Instant unmake = getUnmake();
-        unmake.setOwner(owner);
-
-        return unmake;
-    }
-
     public static Instant getUnmake() {
-        TargetedEffect<Creature> unmakeEffect = new TargetedEffect<>(new CreatureOnBattlefield(),
-                new MultiEffect(new LeaveBattlefield(), new ExilePermanent()));
+        TargetedEffect<Creature> unmakeEffect = new TargetedEffect<>(new CreatureOnBattlefield(), new ExilePermanent());
         Instant unmake = new Instant("Unmake", new ManaCost(), unmakeEffect);
 
         return unmake;

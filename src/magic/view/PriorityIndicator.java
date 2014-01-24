@@ -14,42 +14,55 @@ public class PriorityIndicator extends JPanel {
         timer.setText(seconds + "s");
     }
 
-    public void gainPriority(Player p, boolean sorcery) {
-        hasPriority.setEnabled(true);
+    public void declareAttackers(Player p) {
         cancel.setEnabled(true);
-        hasPriority.setText(p + (sorcery ? " may play Sorceries" : " may play Instants"));
+        border.setTitle("Declare Attackers");
+        repaint();
     }
 
-    public void losePriority() {
-        hasPriority.setEnabled(false);
+    public void declareBlockers(Player p) {
+        cancel.setEnabled(true);
+        border.setTitle("Declare Blockers");
+        repaint();
+    }
+
+    public void gainPriority(Player p, boolean sorcery) {
+        border.setTitle("Play a " + (sorcery ? "Spell" : "Instant"));
+        repaint();
+        cancel.setEnabled(true);
+    }
+
+    public void done() {
+        border.setTitle("No Action");
+        repaint();
         cancel.setEnabled(false);
-        timer.setText("");
+        timer.setText("0");
+        timer.setEnabled(false);
     }
 
     public PriorityIndicator(final GameUI ui) {
         this.ui = ui;
-        setBorder(new TitledBorder("Priority"));
+        border = new TitledBorder("");
+        setBorder(border);
 
-        hasPriority = new JLabel();
         cancel = new JButton("Pass");
         timer = new JLabel("");
 
-        hasPriority.setEnabled(false);
-        cancel.setEnabled(false);
         cancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                ui.pass();
+                ui.cancel();
             }
         });
 
-        add(hasPriority);
         add(timer);
         add(cancel);
+
+        done();
 
         setPreferredSize(new Dimension(200, 100));
     }
 
-    private JLabel hasPriority;
+    private TitledBorder border;
     private JButton cancel;
     private JLabel timer;
     private GameUI ui;

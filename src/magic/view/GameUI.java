@@ -100,22 +100,27 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
 
     @Override
     public void declareAttackers(Player attackingPlayer, Combat combat) {
+        priority.declareAttackers(attackingPlayer);
         while (true) {
             List<Creature> legalAttackers = combat.getLegalAttackers();
 
             if (legalAttackers.isEmpty())
-                return;
+                break;
 
             waitForCard(legalAttackers);
 
             if (cardClicked == null)
-                return;
+                break;
             combat.addAttacker((Creature)cardClicked);
         }
+
+        priority.done();
     }
 
     @Override
     public void declareBlockers(Player defendingPlayer, Combat combat) {
+        priority.declareBlockers(defendingPlayer);
+
         while (true) {
             List<Creature> legalBlockers = new LinkedList<>();
             for (Creature c : defendingPlayer.getCreaturesControlled()) {
@@ -124,18 +129,20 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
             }
 
             if (legalBlockers.isEmpty())
-                return;
+                break;
 
             waitForCard(legalBlockers);
 
             if (cardClicked == null)
-                return;
+                break;
 
             Object[] attackers = combat.getAttackers().toArray();
             Creature attacker = (Creature)JOptionPane.showInputDialog(this, "Choose an Attacking Creature to Block", "Declare Blockers", JOptionPane.QUESTION_MESSAGE, null, attackers, null);
 
             combat.addBlocker((Creature)cardClicked, attacker);
         }
+
+        priority.done();
     }
 
     public Stackable offerPriority(Player player, boolean canPlaySorcery) {
@@ -143,7 +150,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         List<Card> legalCardList = new LinkedList<>();
         for (Card c : player.getHand()) {
             if (c.canCast(engine) && (c.isInstantSpeed() || canPlaySorcery))
-                 legalCardList.add(c);
+                legalCardList.add(c);
         }
 
         if (legalCardList.isEmpty())
@@ -160,7 +167,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         if (cardClicked != null && cardClicked instanceof Instant)
             chooseTargets((Instant) cardClicked);
 
-        priority.losePriority();
+        priority.done();
 
         return cardClicked;
     }
@@ -169,8 +176,8 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         cardClicked = c;
     }
 
-    protected void pass() {
-        passed = true;
+    protected void cancel() {
+        cancelled = true;
     }
 
     public GameUI(Engine engine) {
@@ -260,7 +267,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
     private Card waitForCard(List<Card> options, int seconds) {
         highlightOptions(options);
         cardClicked = null;
-        passed = false;
+        cancelled = false;
         int increment = 500;
         int count = seconds*1000/increment;
         for (int i = 0; i<count; ++i) {
@@ -270,7 +277,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (passed == true) {
+            if (cancelled == true) {
                 cardClicked = null;
                 return null;
             }
@@ -287,14 +294,14 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
     private Card waitForCard(List<? extends Card> options) {
         highlightOptions(options);
         cardClicked = null;
-        passed = false;
+        cancelled = false;
         while(true) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (passed == true) {
+            if (cancelled == true) {
                 cardClicked = null;
                 return null;
             }
@@ -319,7 +326,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
     private PriorityIndicator priority;
 
     private Card cardClicked;
-    private boolean passed;
+    private boolean cancelled;
 
     private Engine engine;
 }

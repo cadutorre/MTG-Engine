@@ -24,7 +24,8 @@ public class GameController {
 
         GameController game = new GameController(engine, ui);
         game.setPlayerController(playerOne, ui);
-        game.setPlayerController(playerTwo, new RandomAI(engine));
+        //game.setPlayerController(playerTwo, new RandomAI(engine));
+        game.setPlayerController(playerTwo, new PassingAI());
 
         engine.setController(game);
 

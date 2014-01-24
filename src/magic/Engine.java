@@ -170,9 +170,9 @@ public class Engine {
      * where appropriate.
      *
      * Starting with the Active Player, each Player receives Priorty in turn. At that time the Player may
-     * place as many Stackables on the Stack as they wish, until they pass Priority to the next Player.
+     * place as many Stackables on the Stack as they wish, until they cancel Priority to the next Player.
      *
-     * When all Players pass Priority in a row, the Stack is popped - or, if the stack is empty, the process
+     * When all Players cancel Priority in a row, the Stack is popped - or, if the stack is empty, the process
      * is complete.
      */
     public void passPriority() {
@@ -232,7 +232,7 @@ public class Engine {
 
     /**
      * Give a Player a chance to put a Spell or Ability onto the Stack.
-     * If the Player does not pass priority the Stack will be updated by that Player
+     * If the Player does not cancel priority the Stack will be updated by that Player
      * @return whether the Player accepts Priority and plays a Spell or Ability
      */
     private boolean offerPriority(Player p) {

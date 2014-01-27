@@ -38,9 +38,9 @@ public class RandomAI implements PlayerController {
 
     @Override
     public void declareAttackers(Player p, Combat c) {
-            List<Creature> attackers = c.getLegalAttackers();
-            if (attackers.isEmpty())
-                return;
+        List<Creature> attackers = c.getLegalAttackers();
+        if (attackers.isEmpty())
+            return;
 
         for (Creature a : attackers) {
             if (Math.random() > .5)

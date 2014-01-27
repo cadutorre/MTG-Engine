@@ -6,6 +6,7 @@ import magic.Player;
 import magic.Stackable;
 import magic.card.Card;
 import magic.card.Instant;
+import magic.card.creature.Creature;
 import magic.effect.Effect;
 import magic.effect.TargetedEffect;
 
@@ -24,8 +25,7 @@ public class RandomAI implements PlayerController {
         if (legalCardList.isEmpty())
             return null;
 
-        // 75% chance to play a spell
-        if (Math.random() > .75) {
+        if (Math.random() > .25) {
             Card card = AIUtil.randomIndex(legalCardList);
 
             if (card instanceof Instant)
@@ -38,6 +38,14 @@ public class RandomAI implements PlayerController {
 
     @Override
     public void declareAttackers(Player p, Combat c) {
+            List<Creature> attackers = c.getLegalAttackers();
+            if (attackers.isEmpty())
+                return;
+
+        for (Creature a : attackers) {
+            if (Math.random() > .5)
+                c.addAttacker(a);
+        }
     }
 
     @Override

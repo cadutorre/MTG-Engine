@@ -53,8 +53,10 @@ public class CardList extends JPanel {
 
         cards.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                if (cards.getSelectedValue() != null)
+                if (cards.getSelectedValue() != null) {
                     ui.cardClicked(cards.getSelectedValue().card);
+                    cards.setSelectedIndex(-1);
+                }
             }
         });
 

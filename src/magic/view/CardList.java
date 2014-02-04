@@ -1,9 +1,9 @@
 package magic.view;
 
 import magic.card.Card;
+import sun.awt.OrientableFlowLayout;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -35,14 +35,9 @@ public class CardList extends JPanel {
         repaint();
     }
 
-    @Override
-    public void setSize(int width, int height) {
-        super.setSize(width, height);
-    }
-
     public CardList(String name, final GameUI ui) {
         this.ui = ui;
-        setBorder(new TitledBorder(name));
+        setLayout(new OrientableFlowLayout(OrientableFlowLayout.HORIZONTAL));
 
         cardModel = new CardListModel();
 
@@ -63,6 +58,9 @@ public class CardList extends JPanel {
         cardScroller = new JScrollPane(cards);
         cardScroller.setPreferredSize(new Dimension(700, CardView.HEIGHT + 24));
 
+        JLabel nameLabel = new JLabel(name);
+        nameLabel.setUI(VerticalLabelUI.INSTANCE);
+        add(nameLabel);
         add(cardScroller);
     }
 

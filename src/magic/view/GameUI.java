@@ -226,12 +226,10 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         getContentPane().add(center, BorderLayout.CENTER);
         for (Player p : engine.getPlayers()) {
             CardList hand = new CardList(p + "'s Hand", this);
-            hand.setPreferredSize(new Dimension(750, CardView.HEIGHT + 70));
             center.add(hand);
             hands.put(p, hand);
 
             CardList creatures = new CardList(p + "'s Creatures", this);
-            creatures.setPreferredSize(new Dimension(750, CardView.HEIGHT + 70));
             center.add(creatures);
             battlefields.put(p, creatures);
         }

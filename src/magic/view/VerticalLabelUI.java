@@ -23,15 +23,15 @@ public class VerticalLabelUI extends BasicLabelUI {
         labelUI = new VerticalLabelUI(false);
     }
 
-    public Dimension getPreferredSize(JComponent c){
+    public Dimension getPreferredSize(JComponent c) {
         Dimension dim = super.getPreferredSize(c);
-        return new Dimension( dim.height, dim.width );
+        return new Dimension(dim.height, dim.width);
     }
 
     public void paint(Graphics g, JComponent c) {
         JLabel label = (JLabel)c;
         String text = label.getText();
-        Icon icon = (label.isEnabled()) ? label.getIcon() : label.getDisabledIcon();
+        Icon icon = label.isEnabled() ? label.getIcon() : label.getDisabledIcon();
 
         if (icon == null && text == null)
             return;
@@ -51,7 +51,7 @@ public class VerticalLabelUI extends BasicLabelUI {
 
         String clippedText = layoutCL(label, fm, text, icon, paintViewR, paintIconR, paintTextR);
 
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D)g;
         AffineTransform tr = g2.getTransform();
         if (clockwise) {
             g2.rotate(Math.PI/2);
@@ -77,7 +77,7 @@ public class VerticalLabelUI extends BasicLabelUI {
         g2.setTransform(tr);
     }
 
-    public VerticalLabelUI(boolean clockwise){
+    public VerticalLabelUI(boolean clockwise) {
         super();
         this.clockwise = clockwise;
     }

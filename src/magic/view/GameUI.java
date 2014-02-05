@@ -190,6 +190,10 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         cancelled = true;
     }
 
+    protected void togglePause(boolean isPaused) {
+        paused = isPaused;
+    }
+
     public GameUI(Engine engine) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -278,15 +282,18 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
         highlightOptions(options);
         cardClicked = null;
         cancelled = false;
+        paused = false;
         int increment = 500;
         int count = seconds*1000/increment;
-        for (int i = 0; i<count; ++i) {
-            priority.displayCountdown(seconds-(i*increment/1000));
+        int tick = 0;
+        while (tick < count) { //(int i = 0; i<count; ++i) {
+            priority.displayCountdown(seconds-(tick*increment/1000));
             try {
                 Thread.sleep(increment);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             if (cancelled == true) {
                 cardClicked = null;
                 return null;
@@ -297,6 +304,8 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
                 else
                     return cardClicked;
             }
+            if (!paused)
+                ++tick;
         }
         return null;
     }
@@ -338,6 +347,7 @@ public class GameUI extends JFrame implements GameStateObserver, PlayerControlle
 
     private Card cardClicked;
     private boolean cancelled;
+    private boolean paused;
 
     private Engine engine;
 }

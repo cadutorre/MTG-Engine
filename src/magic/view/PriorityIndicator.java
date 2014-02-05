@@ -30,14 +30,20 @@ public class PriorityIndicator extends JPanel {
         border.setTitle("Play a " + (sorcery ? "Spell" : "Instant"));
         repaint();
         cancel.setEnabled(true);
+
+        pause.setEnabled(!sorcery);
+        pause.setSelected(false);
     }
 
     public void done() {
         border.setTitle("No Action");
         repaint();
         cancel.setEnabled(false);
+        pause.setEnabled(false);
         timer.setText("0");
         timer.setEnabled(false);
+        pause.setEnabled(false);
+        pause.setSelected(false);
     }
 
     public PriorityIndicator(final GameUI ui) {
@@ -46,6 +52,7 @@ public class PriorityIndicator extends JPanel {
         setBorder(border);
 
         cancel = new JButton("Pass");
+        pause = new JToggleButton("Pause");
         timer = new JLabel("");
 
         cancel.addActionListener(new ActionListener() {
@@ -53,8 +60,14 @@ public class PriorityIndicator extends JPanel {
                 ui.cancel();
             }
         });
+        pause.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                ui.togglePause(pause.isSelected());
+            }
+        });
 
         add(timer);
+        add(pause);
         add(cancel);
 
         done();
@@ -65,5 +78,6 @@ public class PriorityIndicator extends JPanel {
     private TitledBorder border;
     private JButton cancel;
     private JLabel timer;
+    private JToggleButton pause;
     private GameUI ui;
 }

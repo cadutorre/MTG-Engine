@@ -68,7 +68,7 @@ public class GameController {
 
         engine.addStateObserver(ui);
 
-        playerControllers = new HashMap();
+        playerControllers = new HashMap<>();
     }
 
     private Engine engine;
